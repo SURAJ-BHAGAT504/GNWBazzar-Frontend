@@ -1,0 +1,110 @@
+import { Component, inject } from '@angular/core';
+import { Healthcare } from '../../../../Core/Services/healthcare';
+import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
+@Component({
+  selector: 'app-healthcarecategory',
+  imports: [CommonModule, FormsModule],
+  templateUrl: './healthcarecategory.html',
+  styleUrl: './healthcarecategory.css',
+})
+export class Healthcarecategory {
+  healthcare = inject(Healthcare);
+  router = inject(Router);
+
+  categories: any[] = [];
+  categoryMasters: any[] = [];
+  loading = false;
+
+  showPopup = false;
+
+  formModel = {
+    Category: '',
+    CategoryMasterId: 0,
+    Description: '',
+    IsActive: true,
+    CreatedOn: new Date()
+  };
+
+  ngOnInit() {
+    this.fetchCategories();
+    this.loadCategoryMasters();
+  }
+
+  fetchCategories() {
+    this.loading = true;
+
+    this.healthcare.getHealthCareCategories().subscribe({
+      next: (res) => {
+        if (res?.ResponseCode === 200) {
+          this.categories = res?.Value || [];
+        }
+        this.loading = false;
+      },
+      error: () => this.loading = false
+    });
+  }
+
+  loadCategoryMasters() {
+    this.healthcare.getCategoryMasters().subscribe({
+      next: (res) => {
+        if (res?.ResponseCode === 200) {
+          this.categoryMasters = res?.Value || [];
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+  }
+
+  getCategoryMasterName(id: number): string {
+
+    const master = this.categoryMasters?.find(m => m.Id === id);
+
+    return master ? master.CategoryName : 'N/A';
+  }
+
+  openPopup() {
+    this.showPopup = true;
+  }
+
+  closePopup() {
+    this.showPopup = false;
+  }
+
+  saveCategory(form: any) {
+
+    if (form.invalid) return;
+
+    const data = {
+      ...this.formModel,
+      CreatedOn: new Date().toISOString()
+    };
+
+    this.healthcare.createHealthCareCategory(data).subscribe({
+      next: (res) => {
+
+        if (res?.ResponseCode === 200) {
+
+          this.closePopup();
+          this.fetchCategories();
+
+          this.formModel = {
+            Category: '',
+            CategoryMasterId: 0,
+            Description: '',
+            IsActive: true,
+            CreatedOn: new Date()
+          };
+        }
+      },
+      error: (err) => {
+        console.error(err);
+        alert(err.error?.Message || "Error occurred");
+      }
+    });
+  }
+}

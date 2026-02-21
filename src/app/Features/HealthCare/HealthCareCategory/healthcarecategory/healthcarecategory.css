@@ -1,0 +1,224 @@
+/* =========================================
+   1. CATEGORY WRAPPER
+   ========================================= */
+.category-wrapper {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* =========================================
+   2. HEADER & ACTION BUTTON
+   ========================================= */
+.category-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.category-header h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #111827;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.create-btn {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.create-btn:hover {
+    background: #1e40af;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+/* =========================================
+   3. TABLE (DATE & ALIGNMENT FIX)
+   ========================================= */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #ffffff;
+}
+
+.doctor-table {
+    width: 100%;
+    border-collapse: collapse;
+    /* Changed to 'auto' so columns expand to fit dates */
+    table-layout: auto; 
+}
+
+.doctor-table thead {
+    background: #f9fafb;
+}
+
+.doctor-table th, 
+.doctor-table td {
+    padding: 14px 16px;
+    font-size: 13px;
+    text-align: left;
+    border: 1px solid #e5e7eb; /* Full Grid Borders */
+    vertical-align: middle;
+}
+
+.doctor-table th {
+    color: #6b7280;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.doctor-table td {
+    color: #374151;
+}
+
+/* --- Specific Column Logic --- */
+
+/* 1. Sl. No. */
+.doctor-table th:nth-child(1), 
+.doctor-table td:nth-child(1) { 
+    width: 60px;
+    text-align: center;
+}
+
+/* 4. Created On (The Space Fix) */
+.doctor-table th:nth-child(4), 
+.doctor-table td:nth-child(4) { 
+    /* Prevents the date from wrapping into multiple lines */
+    white-space: nowrap; 
+    /* Ensures minimum space for full date/time string */
+    min-width: 200px;    
+    color: #4b5563;
+}
+
+.doctor-table tr:hover td {
+    background: #f8fafc;
+}
+
+/* =========================================
+   4. POPUP & FORM STYLES
+   ========================================= */
+.popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.5);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 3000;
+}
+
+.popup-container {
+    width: 500px;
+    max-width: 95%;
+    background: white;
+    padding: 24px;
+    border-radius: 12px;
+    position: relative;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    animation: scaleIn 0.2s ease-out;
+}
+
+.close-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: #f3f4f6;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+}
+
+.close-btn:hover {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #374151;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 10px;
+    font-size: 13px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #2563eb;
+    ring: 2px solid rgba(37, 99, 235, 0.1);
+}
+
+.popup-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.cancel-btn {
+    background: #f3f4f6;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    color: #4b5563;
+}
+
+.save-btn {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+@keyframes scaleIn {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}

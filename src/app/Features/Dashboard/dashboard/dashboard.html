@@ -1,0 +1,64 @@
+<nav class="navbar custom-navbar shadow-sm">
+  <div class="container-fluid">
+    <button class="toggle-btn" (click)="isSidebarOpen = !isSidebarOpen">☰</button>
+
+    <div class="navbar-center">
+      <span class="brand-text">XYZ</span>
+    </div>
+
+    <div class="user-profile-wrapper">
+      <div class="home-trigger" routerLink="/dashboard" title="Go to Home">
+        <span class="icon-home">🏠</span>
+      </div>
+
+      <div class="user-trigger" (click)="toggleUserMenu()">👤</div>
+
+      <div class="user-dropdown-menu" *ngIf="isUserMenuOpen">
+        <div class="dropdown-header">
+          <p class="name-label">{{ userName }}</p>
+          <p class="email-label">{{ userEmail }}</p>
+        </div>
+        <hr />
+        <button class="logout-item" (click)="onLogout()">Logout</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <div class="sidebar" [ngClass]="{ 'active': isSidebarOpen }">
+    <ul class="sidebar-links">
+      <li class="nav-group">
+        <div class="nav-header-sm" (click)="toggleHealthCare()">
+          <span>🩺 Health Care ⬇️</span>
+        </div>
+
+        <ul class="sub-menu-compact" *ngIf="isHealthCareOpen">
+          <li>
+            <a routerLink="doctor" routerLinkActive="active-link" (click)="isSidebarOpen = false">
+              Doctors
+            </a>
+          </li>
+          <li>
+            <a routerLink="categorymaster" routerLinkActive="active-link" (click)="isSidebarOpen = false">
+              Category Master
+            </a>
+          </li>
+          <li>
+            <a routerLink="healthcarecategory" routerLinkActive="active-link" (click)="isSidebarOpen = false">
+              Healthcare Category
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <div class="main-content" [ngClass]="{ 'shifted': isSidebarOpen }">
+    <div *ngIf="isMainDashboard" class="welcome-wrapper">
+      <h1>Welcome to Dashboard, {{ userName }}</h1>
+    </div>
+
+    <router-outlet></router-outlet>
+  </div>
+</div>

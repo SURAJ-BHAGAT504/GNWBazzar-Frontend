@@ -1,0 +1,43 @@
+<div class="login-page">
+  <div class="login-card">
+    <div class="login-header">
+      <h1>Welcome back</h1>
+      <p>Enter your details to access your dashboard</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <div class="input-wrapper">
+          <input id="email" type="email" formControlName="email" placeholder="admin@hospital.com"
+            [class.error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+        </div>
+        @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+        <small class="error-text">Please enter a valid email address</small>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="input-wrapper">
+          <input id="password" type="password" formControlName="password" placeholder="••••••••"
+            [class.error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+        </div>
+        @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+        <small class="error-text">Password is required to continue</small>
+        }
+      </div>
+
+      <button type="submit" [disabled]="loginForm.invalid" class="login-button">
+        Sign In
+      </button>
+
+      <div class="form-footer">
+        <div class="form-footer">
+          <p>Forgot password or need an account? <a href="#">Contact Support</a></p>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,131 @@
+<div class="category-wrapper">
+
+    <div class="category-header">
+        <h2>📑 Healthcare Categories</h2>
+
+        <button class="create-btn" (click)="openPopup()">
+            + Add Category
+        </button>
+    </div>
+
+    <div *ngIf="loading" class="loading-text">
+        Loading categories...
+    </div>
+
+    <div class="table-container" *ngIf="!loading && categories.length">
+
+        <table class="doctor-table">
+
+            <thead>
+                <tr>
+                    <th>Sl. No.</th>
+                    <th>Category Name</th>
+                    <th>Category Master</th>
+                    <th>Created On</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr *ngFor="let c of categories; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ c.Category }}</td>
+                    <td>{{ getCategoryMasterName(c.CategoryMasterId) }}</td>
+                    <td>{{ c.CreatedOn | date:'medium' }}</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+    </div>
+
+    <div *ngIf="!loading && categories.length === 0" class="no-data">
+        No category found
+    </div>
+
+</div>
+
+<!-- ================= POPUP ================= -->
+
+<div class="popup-overlay" *ngIf="showPopup">
+
+    <div class="popup-container">
+
+        <button class="close-btn" (click)="closePopup()">✖</button>
+
+        <h3>Create Healthcare Category</h3>
+
+        <form #formRef="ngForm"
+              (ngSubmit)="saveCategory(formRef)"
+              class="popup-body">
+
+            <!-- Category Name -->
+            <div class="form-group">
+                <label>Category Name</label>
+
+                <input type="text"
+                       required
+                       name="CategoryName"
+                       [(ngModel)]="formModel.Category"
+                       #CategoryName="ngModel">
+
+                <small class="error"
+                       *ngIf="CategoryName.touched && CategoryName.invalid">
+                    Category name required
+                </small>
+            </div>
+
+            <!-- Category Master Dropdown -->
+            <div class="form-group">
+                <label>Category Master</label>
+
+                <select name="CategoryMasterId"
+                        required
+                        [(ngModel)]="formModel.CategoryMasterId"
+                        #CategoryMasterId="ngModel">
+
+                    <option value="">Select Category Master</option>
+
+                    <option *ngFor="let m of categoryMasters"
+                            [value]="m.Id">
+                        {{ m.CategoryName }}
+                    </option>
+
+                </select>
+
+                <small class="error"
+                       *ngIf="CategoryMasterId.touched && CategoryMasterId.invalid">
+                    Category master required
+                </small>
+            </div>
+
+            <!-- Description -->
+            <div class="form-group full-width">
+                <label>Description</label>
+
+                <textarea name="Description"
+                          [(ngModel)]="formModel.Description">
+                </textarea>
+            </div>
+
+            <!-- Actions -->
+            <div class="popup-actions">
+
+                <button type="button"
+                        class="cancel-btn"
+                        (click)="closePopup()">
+                    Cancel
+                </button>
+
+                <button type="submit"
+                        class="save-btn"
+                        [disabled]="formRef.invalid">
+                    Save Category
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+</div>

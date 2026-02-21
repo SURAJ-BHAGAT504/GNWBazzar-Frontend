@@ -1,0 +1,123 @@
+<div class="category-wrapper">
+
+  <div class="category-header">
+    <h2>🗂 Category Master</h2>
+
+    <button class="create-btn" (click)="openCreatePopup()">
+      + Create Category
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="loading-text">
+    Loading categories...
+  </div>
+
+  <div class="table-container" *ngIf="!loading && categories.length > 0">
+
+    <table class="doctor-table">
+
+      <thead>
+        <tr>
+          <th>Sl. No.</th>
+          <th>Category Name</th>
+          <th>Description</th>
+          <th>Created On</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr *ngFor="let c of categories; let i = index">
+          <td>{{i + 1}}</td>
+          <td>{{c.CategoryName}}</td>
+          <td>{{c.Description}}</td>
+          <td>{{c.CreatedOn | date:'medium'}}</td>
+          <td>
+            <span [ngClass]="c.IsActive ? 'active-badge' : 'inactive-badge'">
+              {{ c.IsActive ? 'Active' : 'Inactive' }}
+            </span>
+          </td>
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+  <div *ngIf="!loading && categories.length === 0" class="no-data">
+    No categories found.
+  </div>
+</div>
+
+<!-- CREATE POPUP -->
+
+<div class="popup-overlay" *ngIf="showCreatePopup">
+
+  <div class="popup-container">
+
+    <div class="popup-header">
+      <h3>Create Category</h3>
+      <button class="close-btn" (click)="closePopup()">✖</button>
+    </div>
+
+    <form #formRef="ngForm" (ngSubmit)="saveCategory(formRef)" class="popup-body">
+
+      <div class="form-group">
+        <label>Category Name</label>
+        <input type="text"
+               required
+               name="CategoryName"
+               [(ngModel)]="categoryForm.CategoryName"
+               #CategoryName="ngModel">
+
+        <small class="error"
+          *ngIf="CategoryName.invalid && CategoryName.touched">
+          Category name required
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label>Description</label>
+        <textarea name="Description"
+                  [(ngModel)]="categoryForm.Description"></textarea>
+      </div>
+
+      <div class="popup-actions">
+        <button type="button" class="cancel-btn" (click)="closePopup()">
+          Cancel
+        </button>
+
+        <button type="submit"
+                class="save-btn"
+                [disabled]="formRef.invalid">
+          Save Category
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>
+
+<!-- ERROR POPUP -->
+
+<div class="modern-error-overlay" *ngIf="showErrorPopup">
+
+  <div class="modern-error-card">
+
+    <div class="error-icon">⚠</div>
+
+    <div class="error-content">
+      <h4>Error</h4>
+      <p>{{backendErrorMessage}}</p>
+    </div>
+
+    <div class="error-actions">
+      <button (click)="showErrorPopup=false">OK</button>
+    </div>
+
+  </div>
+
+</div>

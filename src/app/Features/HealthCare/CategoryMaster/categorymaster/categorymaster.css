@@ -1,0 +1,232 @@
+/* ==============================
+   CATEGORY MASTER WRAPPER
+   ============================== */
+
+.category-wrapper {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 20px;
+    font-family: Inter, system-ui, sans-serif;
+}
+
+/* Header */
+
+.category-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.category-header h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #111827;
+    margin: 0;
+}
+
+/* Create Button */
+
+.create-btn {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.create-btn:hover {
+    background: #1e40af;
+    transform: translateY(-1px);
+}
+
+/* Table (With Grid Borders) */
+
+.table-container {
+    overflow-x: auto;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb; /* Container border */
+}
+
+.doctor-table {
+    width: 100%;
+    border-collapse: collapse; /* Essential for grid borders */
+}
+
+.doctor-table thead {
+    background: #f9fafb;
+}
+
+.doctor-table th {
+    text-align: left;
+    padding: 12px 10px;
+    font-size: 13px;
+    color: #6b7280;
+    border: 1px solid #e5e7eb; /* Added Full Grid Border */
+}
+
+.doctor-table td {
+    padding: 12px 10px;
+    font-size: 13px;
+    color: #374151;
+    border: 1px solid #e5e7eb; /* Added Full Grid Border */
+    vertical-align: middle;
+}
+
+/* Row Hover effect */
+.doctor-table tr:hover td {
+    background-color: #f9fafb;
+}
+
+/* Status Badge */
+
+.active-badge {
+    background: #dcfce7;
+    color: #16a34a;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    display: inline-block;
+}
+
+.inactive-badge {
+    background: #fee2e2;
+    color: #dc2626;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    display: inline-block;
+}
+
+/* Loading & Empty */
+
+.loading-text,
+.no-data {
+    text-align: center;
+    padding: 20px;
+    color: #6b7280;
+}
+
+/* ==============================
+   FORM POPUP
+   ============================== */
+
+.popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.55);
+    backdrop-filter: blur(6px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.popup-container {
+    width: 500px;
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+    position: relative;
+}
+
+/* Form */
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+}
+
+.form-group label {
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #374151;
+}
+
+.form-group input,
+.form-group textarea {
+    padding: 7px 8px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 13px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #2563eb;
+    outline: none;
+}
+
+/* Buttons */
+
+.popup-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.cancel-btn {
+    background: #e5e7eb;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.save-btn {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.save-btn:disabled {
+    background: #93c5fd;
+    cursor: not-allowed;
+}
+
+/* Error Style */
+
+.error {
+    color: #ef4444;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: none;
+    background: #f3f4f6;
+    color: #374151;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.close-btn:hover {
+    background: #d1d5db;
+    color: black;
+    transform: scale(1.05);
+}

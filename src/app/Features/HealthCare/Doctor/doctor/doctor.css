@@ -1,0 +1,325 @@
+/* =========================================
+    DOCTOR LIST WRAPPER
+========================================= */
+
+.doctor-wrapper {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* =========================================
+    HEADER
+========================================= */
+
+.doctor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.doctor-header h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.create-btn {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: 0.25s ease;
+}
+
+.create-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
+}
+
+/* =========================================
+    TABLE & SCROLLING (WITH BORDERS)
+========================================= */
+
+.table-container {
+  width: 100%;
+  overflow-x: auto; 
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+}
+
+.doctor-table {
+  width: 100%;
+  min-width: 1600px; 
+  border-collapse: collapse; /* Essential for clean borders */
+  table-layout: auto; 
+}
+
+.doctor-table thead {
+  background: #f9fafb;
+}
+
+.doctor-table th {
+  padding: 12px;
+  font-size: 13px;
+  color: #6b7280;
+  border: 1px solid #e5e7eb; /* Grid Border */
+  text-align: left;
+  white-space: nowrap;
+}
+
+.doctor-table td {
+  padding: 12px;
+  font-size: 13px;
+  color: #374151;
+  border: 1px solid #e5e7eb; /* Grid Border */
+  white-space: nowrap; 
+  vertical-align: top; 
+}
+
+/* =========================================
+    OVERLAP FIX FOR 'ABOUT DOCTOR'
+========================================= */
+
+.doctor-table td:nth-child(7) {
+  white-space: normal;      
+  word-break: break-all;    
+  min-width: 250px;         
+  max-width: 400px;         
+  line-height: 1.5;
+}
+
+.doctor-table tr:hover td {
+  background: #f9fafb;
+}
+
+.doctor-table img {
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid #eee;
+}
+
+/* =========================================
+    STATUS BADGES
+========================================= */
+
+.active-badge {
+  background: #dcfce7;
+  color: #16a34a;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.inactive-badge {
+  background: #fee2e2;
+  color: #dc2626;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* =========================================
+    POPUP OVERLAY
+========================================= */
+
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+}
+
+.popup-container {
+  width: 1000px;
+  max-width: 95%;
+  background: white;
+  border-radius: 16px;
+  padding: 22px 26px;
+  box-shadow: 0 30px 70px rgba(0,0,0,0.3);
+  animation: scaleIn 0.2s ease;
+  position: relative;
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.popup-header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #1e3a8a;
+}
+
+.close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: #f3f4f6;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.close-btn:hover {
+  background: #ef4444;
+  color: white;
+}
+
+/* =========================================
+    FORM GRID (3-COLUMNS)
+========================================= */
+
+.popup-body {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px 22px;
+}
+
+.popup-body textarea {
+  grid-column: span 3;
+  height: 70px;
+  resize: none;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-size: 12px;
+  margin-bottom: 4px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  padding: 7px 10px;
+  font-size: 13px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  transition: 0.2s ease;
+  width: 100%;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+.form-group select {
+  appearance: none;
+  background-image: 
+    linear-gradient(45deg, transparent 50%, #6b7280 50%),
+    linear-gradient(135deg, #6b7280 50%, transparent 50%);
+  background-position: calc(100% - 18px) center, calc(100% - 13px) center;
+  background-size: 6px 6px;
+  background-repeat: no-repeat;
+}
+
+/* Validation */
+.error {
+  color: #ef4444;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+input.ng-invalid.ng-touched,
+textarea.ng-invalid.ng-touched,
+select.ng-invalid.ng-touched {
+  border-color: #ef4444;
+  background: #fef2f2;
+}
+
+/* =========================================
+    BUTTON AREA
+========================================= */
+
+.popup-actions {
+  grid-column: span 3;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.cancel-btn {
+  background: #e5e7eb;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.save-btn {
+  background: linear-gradient(135deg,#2563eb,#1d4ed8);
+  color: white;
+  border: none;
+  padding: 8px 22px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.save-btn:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* =========================================
+    ANIMATION & ERROR
+========================================= */
+
+@keyframes scaleIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.modern-error-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 4000;
+}
+
+.modern-error-card {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  text-align: center;
+  width: 320px;
+}
+
+.error-icon {
+  font-size: 30px;
+  margin-bottom: 10px;
+}

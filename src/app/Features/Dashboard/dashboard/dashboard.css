@@ -1,0 +1,308 @@
+/* =========================================
+   1. GLOBAL & LAYOUT
+   ========================================= */
+:host {
+    display: block;
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    background-color: #f9fafb;
+    min-height: 100vh;
+    color: #374151;
+}
+
+/* Layout container */
+.main-container {
+    display: flex;
+}
+
+/* =========================================
+   2. NAVBAR STYLES
+   ========================================= */
+.custom-navbar {
+    height: 60px;
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 0 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1050;
+    display: flex;
+    align-items: center;
+}
+
+.container-fluid {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+
+.navbar-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+}
+
+.brand-text {
+    font-weight: 700;
+    color: #111827;
+    font-size: 16px;
+    pointer-events: auto;
+}
+
+.toggle-btn {
+    background: transparent;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    color: #6b7280;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.toggle-btn:hover {
+    background: #f3f4f6;
+    color: #111827;
+}
+
+/* =========================================
+   3. USER DROPDOWN
+   ========================================= */
+.user-profile-wrapper {
+    position: relative;
+    cursor: pointer;
+}
+
+.user-trigger {
+    font-size: 18px;
+    background: #f3f4f6;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease;
+    border: 1px solid #e5e7eb;
+}
+
+.user-trigger:hover {
+    background: #e5e7eb;
+}
+
+.user-dropdown-menu {
+    position: absolute;
+    right: 0;
+    top: 50px;
+    background: white;
+    min-width: 220px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
+    padding: 12px;
+    z-index: 9999;
+    border: 1px solid #e5e7eb;
+}
+
+.name-label {
+    margin: 0;
+    font-weight: 600;
+    color: #111827;
+    font-size: 14px;
+}
+
+.email-label {
+    margin: 0;
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.logout-item {
+    width: 100%;
+    background: #fef2f2;
+    border: none;
+    color: #dc2626;
+    font-weight: 500;
+    padding: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 8px;
+    font-size: 13px;
+    transition: 0.2s ease;
+}
+
+.logout-item:hover {
+    background: #dc2626;
+    color: #ffffff;
+}
+
+/* =========================================
+   4. SIDEBAR
+   ========================================= */
+.sidebar {
+    width: 240px;
+    height: 100vh;
+    background: #ffffff;
+    border-right: 1px solid #e5e7eb;
+    position: fixed;
+    top: 60px; /* below navbar */
+    left: 0;
+    transition: transform 0.3s ease;
+    z-index: 1040;
+}
+
+.sidebar:not(.active) {
+    transform: translateX(-100%);
+}
+
+.sidebar-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-header-sm {
+    padding: 12px 20px;
+    cursor: pointer;
+    color: #4b5563;
+    font-size: 13px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.nav-header-sm:hover {
+    color: #2563eb;
+}
+
+.sub-menu-compact {
+    list-style: none;
+    padding: 0;
+    background: #f9fafb;
+}
+
+.sub-menu-compact li a {
+    padding: 8px 20px 8px 40px;
+    font-size: 13px;
+    color: #6b7280;
+    text-decoration: none;
+    display: block;
+    transition: 0.2s;
+}
+
+.sub-menu-compact li a:hover {
+    color: #2563eb;
+    background: #eff6ff;
+}
+
+.active-link {
+    color: #2563eb !important;
+    background: #eff6ff !important;
+    font-weight: 500;
+    border-right: 3px solid #2563eb;
+}
+
+/* =========================================
+   5. MAIN CONTENT
+   ========================================= */
+.main-content {
+    margin-top: 60px;
+    margin-left: 0;
+    padding: 24px;
+    width: 100%;
+    min-height: calc(100vh - 60px);
+    transition: margin-left 0.3s ease;
+}
+
+.main-content.shifted {
+    margin-left: 240px;
+}
+
+.welcome-wrapper {
+    margin-bottom: 20px;
+}
+
+.welcome-wrapper h1 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.user-profile-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-profile-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+}
+
+/* Base style for both circular icons */
+.home-trigger, 
+.user-trigger {
+  width: 40px;
+  height: 40px;
+  background-color: #ffffff;  /* White background */
+  border: 1px solid #e2e8f0;   /* Light border like standard UI kits */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* Home Icon specific sizing */
+.icon-home {
+  font-size: 22px;
+  color: #475569;
+  line-height: 1;
+  margin-bottom: 2px; /* Optical alignment for the house icon */
+}
+
+/* User Icon specific sizing */
+.icon-user {
+  font-size: 18px;
+  color: #475569;
+}
+
+/* Hover States */
+.home-trigger:hover, 
+.user-trigger:hover {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Active State (Click) */
+.home-trigger:active, 
+.user-trigger:active {
+  transform: scale(0.95);
+  background-color: #f1f5f9;
+}
+
+/* =========================================
+   6. RESPONSIVE
+   ========================================= */
+@media (max-width: 992px) {
+
+    .sidebar {
+        top: 60px;
+    }
+
+    .main-content.shifted {
+        margin-left: 0;
+    }
+}
