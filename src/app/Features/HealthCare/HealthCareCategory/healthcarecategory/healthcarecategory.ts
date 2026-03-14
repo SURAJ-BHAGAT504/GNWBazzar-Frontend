@@ -23,7 +23,6 @@ export class Healthcarecategory {
   formModel = {
     Category: '',
     CategoryMasterId: 0,
-    Description: '',
     IsActive: true,
     CreatedOn: new Date()
   };
@@ -40,6 +39,11 @@ export class Healthcarecategory {
       next: (res) => {
         if (res?.ResponseCode === 200) {
           this.categories = res?.Value || [];
+
+          this.categories.sort(
+            (a: any, b: any) =>
+              new Date(b.CreatedOn).getTime() - new Date(a.CreatedOn).getTime()
+          );
         }
         this.loading = false;
       },
@@ -95,7 +99,6 @@ export class Healthcarecategory {
           this.formModel = {
             Category: '',
             CategoryMasterId: 0,
-            Description: '',
             IsActive: true,
             CreatedOn: new Date()
           };

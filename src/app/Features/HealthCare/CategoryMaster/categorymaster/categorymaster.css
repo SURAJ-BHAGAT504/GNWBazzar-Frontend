@@ -77,6 +77,12 @@
     vertical-align: middle;
 }
 
+.doctor-table th,
+.doctor-table td {
+  text-align: center;
+  vertical-align: middle;
+}
+
 /* Row Hover effect */
 .doctor-table tr:hover td {
     background-color: #f9fafb;

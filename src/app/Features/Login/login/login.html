@@ -38,6 +38,10 @@
           <p>Forgot password or need an account? <a href="#">Contact Support</a></p>
         </div>
       </div>
+
+      <div class="error-box" *ngIf="loginErrorMessage">
+        {{ loginErrorMessage }}
+      </div>
     </form>
   </div>
 </div>

@@ -86,6 +86,12 @@
   vertical-align: top; 
 }
 
+.doctor-table th,
+.doctor-table td {
+  text-align: center;
+  vertical-align: middle;
+}
+
 /* =========================================
     OVERLAP FIX FOR 'ABOUT DOCTOR'
 ========================================= */
@@ -322,4 +328,78 @@ select.ng-invalid.ng-touched {
 .error-icon {
   font-size: 30px;
   margin-bottom: 10px;
+}
+
+.cancel-btn {
+  margin-top: 15px;
+  background-color: red;
+}
+
+.dropdown-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+}
+
+.custom-multiselect {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: #fff;
+    cursor: pointer;
+    height: 38px; 
+    width: 100%;
+    box-sizing: border-box; 
+}
+
+.selected-text {
+    font-size: 14px;
+    color: #333;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-right: 10px; 
+}
+
+.multiselect-list {
+    position: absolute;
+    top: 100%; 
+    left: 0;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    background: white;
+    border: 1px solid #adadad;
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 9999; 
+}
+
+.list-item {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.list-item:hover {
+    background: #f5faff;
+}
+
+.list-item input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.list-item span {
+    font-size: 14px;
+    color: #333;
 }

@@ -92,6 +92,12 @@
     color: #374151;
 }
 
+.doctor-table th,
+.doctor-table td {
+  text-align: center;
+  vertical-align: middle;
+}
+
 /* --- Specific Column Logic --- */
 
 /* 1. Sl. No. */

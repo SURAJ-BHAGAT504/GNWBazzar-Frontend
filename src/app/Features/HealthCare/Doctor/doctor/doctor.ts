@@ -16,26 +16,29 @@ export class Doctor {
   healthcare = inject(Healthcare);
   router = inject(Router);
 
+  baseUrl = 'https://gnwbazaar-002-site2.qtempurl.com/';
+
   doctors: any[] = [];
   categories: any[] = [];
   loading = false;
 
   showCreatePopup = false;
   showErrorPopup = false;
+  showDropdown = false;
 
   backendErrorMessage = '';
 
   doctorForm: any = {
     DoctorName: '',
-    HealthCareSubCategoryId: '',
+    HealthCareCategoryIds: [],
     Qualification: '',
     AboutDoctor: '',
     Experience: null,
     Phonenumber: '',
+    WhatsAppNumber: '',
     Email: '',
     Address: '',
     location: '',
-    IsActive: true
   };
 
   doctorImageFile!: File;
@@ -53,6 +56,11 @@ export class Doctor {
       next: (res) => {
         if (res?.ResponseCode === 200) {
           this.doctors = res?.Value || [];
+
+          this.doctors.sort(
+            (a: any, b: any) =>
+              new Date(b.CreatedOn).getTime() - new Date(a.CreatedOn).getTime()
+          );
         }
         this.loading = false;
       },
@@ -72,14 +80,23 @@ export class Doctor {
     });
   }
 
-  getCategoryName(categoryId: number): string {
-    if (!this.categories || !categoryId) return '';
+  getCategoryNames(doctor: any): string {
+    const ids = doctor.HealthCareCategoryIds;
 
-    const category = this.categories.find(
-      c => c.Id === categoryId
-    );
+    if (!ids || !Array.isArray(ids) || ids.length === 0 || !this.categories || this.categories.length === 0) {
+      return 'N/A';
+    }
 
-    return category ? category.Category : '';
+    const names = this.categories
+      .filter(cat => {
+        const catId = cat.Id !== undefined ? cat.Id : cat.id;
+        return ids.includes(catId);
+      })
+      .map(cat => {
+        return cat.Category || cat.category || 'Unknown';
+      });
+
+    return names.length > 0 ? names.join(', ') : 'N/A';
   }
 
   goToCreateDoctor() {
@@ -94,20 +111,68 @@ export class Doctor {
     this.clinicImageFile = event.target.files[0];
   }
 
-  getImageUrl(fullPath: string): string {
-    if (!fullPath) return '';
+  clearDoctorImage(input: HTMLInputElement) {
+    this.doctorImageFile = null as any;
+    input.value = '';
+  }
 
-    const index = fullPath.toLowerCase().indexOf('healthcare');
+  clearClinicImage(input: HTMLInputElement) {
+    this.clinicImageFile = null as any;
+    input.value = '';
+  }
 
-    if (index === -1) return '';
+  openImageNewTab(path: string) {
+    if (!path) return;
 
-    let relativePath = fullPath.substring(index);
+    const url = this.getImageUrl(path);
 
-    relativePath = relativePath.replace(/\\/g, '/');
+    if (url) {
+      window.open(url, '_blank');
+    }
+  }
 
-    relativePath = encodeURI(relativePath);
+  getImageUrl(Path: string | null | undefined): string {
+    if (!Path) return '';
 
-    return `https://win1039.site4now.net/${relativePath}`;
+  let normalized = Path.replace(/\\/g, '/');
+
+  let folderIndex = normalized.indexOf('DoctorImage');
+  if (folderIndex === -1) {
+    folderIndex = normalized.indexOf('ClinicImage');
+  }
+
+  if (folderIndex === -1) return '';
+
+  const cleanPath = normalized.substring(folderIndex);
+
+  const base = this.baseUrl.endsWith('/') ? this.baseUrl : `${this.baseUrl}/`;
+  return `${base}${cleanPath}`;
+  }
+
+  toggleDropdown() {
+    this.showDropdown = !this.showDropdown;
+  }
+
+  isCategorySelected(id: number): boolean {
+    return this.doctorForm.HealthCareCategoryIds.includes(id);
+  }
+
+  toggleCategory(id: number) {
+    const index = this.doctorForm.HealthCareCategoryIds.indexOf(id);
+    if (index > -1) {
+      this.doctorForm.HealthCareCategoryIds.splice(index, 1);
+    } else {
+      this.doctorForm.HealthCareCategoryIds.push(id);
+    }
+  }
+
+  getSelectedCategoryNames(): string {
+    if (!this.doctorForm.HealthCareCategoryIds?.length) return '';
+
+    return this.categories
+      .filter(c => this.doctorForm.HealthCareCategoryIds.includes(c.Id))
+      .map(c => c.Category)
+      .join(', ');
   }
 
   saveDoctor(form: NgForm) {
@@ -127,15 +192,17 @@ export class Doctor {
     const formData = new FormData();
 
     formData.append('DoctorName', this.doctorForm.DoctorName);
-    formData.append('HealthCareSubCategoryId', this.doctorForm.HealthCareSubCategoryId);
+    this.doctorForm.HealthCareCategoryIds.forEach((id: any) => {
+      formData.append('HealthCareCategoryIds', id);
+    });
     formData.append('Qualification', this.doctorForm.Qualification);
     formData.append('AboutDoctor', this.doctorForm.AboutDoctor);
     formData.append('Experience', this.doctorForm.Experience);
     formData.append('Phonenumber', this.doctorForm.Phonenumber);
+    formData.append('WhatsAppNumber', this.doctorForm.WhatsAppNumber);
     formData.append('Email', this.doctorForm.Email);
     formData.append('Address', this.doctorForm.Address);
     formData.append('location', this.doctorForm.location);
-    formData.append('IsActive', 'true');
 
     if (this.doctorImageFile) {
       formData.append('DoctorImage', this.doctorImageFile);

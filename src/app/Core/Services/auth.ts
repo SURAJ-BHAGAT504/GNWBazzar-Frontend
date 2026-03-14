@@ -10,7 +10,7 @@ export class Auth {
   private http = inject(HttpClient);
   private router = inject(Router);
 
-  private readonly API_BASE = 'http://gnwbazaar-002-site2.qtempurl.com';
+  private readonly API_BASE = 'https://gnwbazaar-002-site2.qtempurl.com';
 
   login(credentials: any): Observable<any> {
   const formData = new FormData();
@@ -27,6 +27,7 @@ export class Auth {
         localStorage.setItem('token', val.accessToken);
         localStorage.setItem('refreshToken', val.token || val.Token);
         localStorage.setItem('user', val.name || val.Name || 'User');
+        localStorage.setItem('role', val.UserRole || val.userRole || 'User');
         localStorage.setItem('Id', val.id || val.Id);
         localStorage.setItem('EMAIL', val.email || val.Email);
       }

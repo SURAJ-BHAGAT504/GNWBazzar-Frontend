@@ -1,18 +1,32 @@
 import { Component, inject } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Auth } from '../../../Core/Services/auth';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
 export class Login {
+
+  constructor(private route: ActivatedRoute) { }
+
   private fb = inject(FormBuilder);
   private authService = inject(Auth);
   private router = inject(Router);
+
+  loginErrorMessage = '';
+
+  ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      if (params['message']) {
+        this.loginErrorMessage = params['message'];
+      }
+    });
+  }
 
   loginForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],

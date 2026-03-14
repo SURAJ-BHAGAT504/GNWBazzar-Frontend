@@ -38,6 +38,11 @@ export class Categorymaster {
 
         if (res?.ResponseCode === 200) {
           this.categories = res?.Value || [];
+
+          this.categories.sort(
+            (a: any, b: any) =>
+              new Date(b.CreatedOn).getTime() - new Date(a.CreatedOn).getTime()
+          );
         }
 
         this.loading = false;
