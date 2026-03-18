@@ -22,6 +22,7 @@
                     <th>Category Name</th>
                     <th>Category Master</th>
                     <th>Created On</th>
+                    <th>Action</th>
                 </tr>
             </thead>
 
@@ -32,6 +33,9 @@
                     <td>{{ c.Category }}</td>
                     <td>{{ getCategoryMasterName(c.CategoryMasterId) }}</td>
                     <td>{{ c.CreatedOn | date:'medium' }}</td>
+                    <td>
+                        <button class="edit-btn" (click)="openUpdatePopup(c)">Update</button>
+                    </td>
                 </tr>
 
             </tbody>
@@ -48,75 +52,41 @@
 <!-- ================= POPUP ================= -->
 
 <div class="popup-overlay" *ngIf="showPopup">
-
     <div class="popup-container">
-
         <button class="close-btn" (click)="closePopup()">✖</button>
 
-        <h3>Create Healthcare Category</h3>
+        <h3>{{ isEditMode ? 'Update' : 'Create' }} Healthcare Category</h3>
 
-        <form #formRef="ngForm"
-              (ngSubmit)="saveCategory(formRef)"
-              class="popup-body">
+        <form #formRef="ngForm" (ngSubmit)="saveCategory(formRef)" class="popup-body">
 
-            <!-- Category Name -->
             <div class="form-group">
                 <label>Category Name</label>
-
-                <input type="text"
-                       required
-                       name="CategoryName"
-                       [(ngModel)]="formModel.Category"
-                       #CategoryName="ngModel">
-
-                <small class="error"
-                       *ngIf="CategoryName.touched && CategoryName.invalid">
+                <input type="text" required name="CategoryName" [(ngModel)]="formModel.Category" #CategoryName="ngModel">
+                <small class="error" *ngIf="CategoryName.touched && CategoryName.invalid">
                     Category name required
                 </small>
             </div>
 
-            <!-- Category Master Dropdown -->
             <div class="form-group">
                 <label>Category Master</label>
-
-                <select name="CategoryMasterId"
-                        required
-                        [(ngModel)]="formModel.CategoryMasterId"
-                        #CategoryMasterId="ngModel">
-
-                    <option value="">Select Category Master</option>
-
-                    <option *ngFor="let m of categoryMasters"
-                            [value]="m.Id">
+                <select name="CategoryMasterId" required [(ngModel)]="formModel.CategoryMasterId" #CategoryMasterId="ngModel">
+                    <option value="" disabled>Select Category Master</option>
+                    <option *ngFor="let m of categoryMasters" [value]="m.Id">
                         {{ m.CategoryName }}
                     </option>
-
                 </select>
-
-                <small class="error"
-                       *ngIf="CategoryMasterId.touched && CategoryMasterId.invalid">
+                <small class="error" *ngIf="CategoryMasterId.touched && CategoryMasterId.invalid">
                     Category master required
                 </small>
             </div>
 
-            <!-- Actions -->
             <div class="popup-actions">
-
-                <button type="button"
-                        class="cancel-btn"
-                        (click)="closePopup()">
-                    Cancel
+                <button type="button" class="cancel-btn" (click)="closePopup()">Cancel</button>
+                <button type="submit" class="save-btn" [disabled]="formRef.invalid">
+                    {{ isEditMode ? 'Update Category' : 'Save Category' }}
                 </button>
-
-                <button type="submit"
-                        class="save-btn"
-                        [disabled]="formRef.invalid">
-                    Save Category
-                </button>
-
             </div>
 
         </form>
-
     </div>
 </div>

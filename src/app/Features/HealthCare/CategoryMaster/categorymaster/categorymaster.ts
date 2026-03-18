@@ -19,6 +19,9 @@ export class Categorymaster {
   showErrorPopup = false;
   backendErrorMessage = '';
 
+  isEditMode = false;
+  editingCategoryId: number | null = null;
+
   categoryForm: any = {
     CategoryName: '',
     Description: '',
@@ -57,41 +60,72 @@ export class Categorymaster {
     this.showCreatePopup = true;
   }
 
-  closePopup() {
-    this.showCreatePopup = false;
+  openUpdatePopup(category: any) {
+    this.isEditMode = true;
+    this.editingCategoryId = category.Id || category.CategoryId; 
+    
+    this.categoryForm = {
+      CategoryName: category.CategoryName,
+      Description: category.Description,
+      IsActive: category.IsActive,
+      CreatedOn: category.CreatedOn
+    };
+    
+    this.showCreatePopup = true;
   }
 
-  saveCategory(form: any) {
-
-    if (form.invalid) return;
-
-    const payload = {
-      CategoryName: this.categoryForm.CategoryName,
-      Description: this.categoryForm.Description,
+  closePopup() {
+    this.showCreatePopup = false;
+    this.isEditMode = false;
+    this.editingCategoryId = null;
+    this.categoryForm = {
+      CategoryName: '',
+      Description: '',
       IsActive: true,
       CreatedOn: new Date()
     };
+  }
 
-    this.healthcare.createCategoryMaster(payload).subscribe({
-      next: (res) => {
+  saveCategory(form: any) {
+    if (form.invalid) return;
 
-        if (res?.ResponseCode === 200) {
-          this.closePopup();
-          this.fetchCategories();
-        }
+    const payload = {
+    Id: this.isEditMode ? this.editingCategoryId : 0,
+    CategoryName: this.categoryForm.CategoryName,
+    Description: this.categoryForm.Description,
+    IsActive: this.categoryForm.IsActive,
+    CreatedOn: this.isEditMode ? this.categoryForm.CreatedOn : new Date()
+  };
 
-      },
-      error: (err) => {
+    if (this.isEditMode && this.editingCategoryId !== null) {
+      this.healthcare.updateCategoryMaster(payload).subscribe({
+        next: (res) => {
+          if (res?.ResponseCode === 200) {
+            this.closePopup();
+            this.fetchCategories();
+          }
+        },
+        error: (err) => this.handleError(err, "Category update failed")
+      });
+    } else {
+      this.healthcare.createCategoryMaster(payload).subscribe({
+        next: (res) => {
+          if (res?.ResponseCode === 200) {
+            this.closePopup();
+            this.fetchCategories();
+          }
+        },
+        error: (err) => this.handleError(err, "Category creation failed")
+      });
+    }
+  }
 
-        if (err.error?.message) {
-          this.backendErrorMessage = err.error.message;
-        }
-        else {
-          this.backendErrorMessage = "Category creation failed";
-        }
-
-        this.showErrorPopup = true;
-      }
-    });
+  handleError(err: any, defaultMessage: string) {
+    if (err.error?.message) {
+      this.backendErrorMessage = err.error.message;
+    } else {
+      this.backendErrorMessage = defaultMessage;
+    }
+    this.showErrorPopup = true;
   }
 }

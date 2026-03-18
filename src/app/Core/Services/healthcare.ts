@@ -15,6 +15,9 @@ export class Healthcare {
   createDoctor(formData: FormData): Observable<any> {
     return this.http.post(`${this.baseUrl}/Create_Doctor`, formData);
   }
+  updateDoctor(formData: FormData): Observable<any> {
+    return this.http.put(`${this.baseUrl}/Update_Doctor`, formData);
+  }
 
   // --- CATEGORY MASTER METHODS ---
   getCategoryMasters(): Observable<any> {
@@ -23,6 +26,9 @@ export class Healthcare {
   createCategoryMaster(data: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/Create_CategoryMaster`, data);
   }
+  updateCategoryMaster(data: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/Update_CategoryMaster`, data);
+  }
 
   // --- HEALTHCARE CATEGORY METHODS ---
   getHealthCareCategories(): Observable<any> {
@@ -30,5 +36,8 @@ export class Healthcare {
   }
   createHealthCareCategory(data: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/Create_HealthCare_Category`, data);
+  }
+  updateHealthCareCategory(data: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/Update_HealthCare_Category`, data);
   }
 }

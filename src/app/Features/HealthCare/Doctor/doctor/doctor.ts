@@ -28,6 +28,9 @@ export class Doctor {
 
   backendErrorMessage = '';
 
+  isEditMode = false;
+  editingDoctorId: number | null = null;
+
   doctorForm: any = {
     DoctorName: '',
     HealthCareCategoryIds: [],
@@ -38,7 +41,8 @@ export class Doctor {
     WhatsAppNumber: '',
     Email: '',
     Address: '',
-    location: '',
+    Location: '',
+    IsActive: true
   };
 
   doctorImageFile!: File;
@@ -100,6 +104,33 @@ export class Doctor {
   }
 
   goToCreateDoctor() {
+    this.isEditMode = false;
+    this.editingDoctorId = null;
+    this.resetForm();
+    this.showCreatePopup = true;
+  }
+
+  openUpdatePopup(doctor: any) {
+    this.isEditMode = true;
+    this.editingDoctorId = doctor.Id || doctor.DoctorId; // Use your backend's specific ID property name
+
+    this.doctorForm = {
+      DoctorName: doctor.DoctorName,
+      HealthCareCategoryIds: [...(doctor.HealthCareCategoryIds || [])], 
+      Qualification: doctor.Qualification,
+      AboutDoctor: doctor.AboutDoctor,
+      Experience: doctor.Experience,
+      Phonenumber: doctor.Phonenumber,
+      WhatsAppNumber: doctor.WhatsAppNumber,
+      Email: doctor.Email,
+      Address: doctor.Address,
+      Location: doctor.Location,
+      IsActive: doctor.IsActive
+    };
+
+    this.doctorImageFile = null as any;
+    this.clinicImageFile = null as any;
+
     this.showCreatePopup = true;
   }
 
@@ -176,7 +207,6 @@ export class Doctor {
   }
 
   saveDoctor(form: NgForm) {
-
     if (form.invalid) {
       this.backendErrorMessage = "Please fill all required fields correctly.";
       this.showErrorPopup = true;
@@ -191,6 +221,11 @@ export class Doctor {
 
     const formData = new FormData();
 
+    if (this.isEditMode && this.editingDoctorId) {
+        formData.append('Id', this.editingDoctorId.toString());
+    }
+    formData.append('IsActive', this.doctorForm.IsActive.toString());
+    
     formData.append('DoctorName', this.doctorForm.DoctorName);
     this.doctorForm.HealthCareCategoryIds.forEach((id: any) => {
       formData.append('HealthCareCategoryIds', id);
@@ -202,21 +237,22 @@ export class Doctor {
     formData.append('WhatsAppNumber', this.doctorForm.WhatsAppNumber);
     formData.append('Email', this.doctorForm.Email);
     formData.append('Address', this.doctorForm.Address);
-    formData.append('location', this.doctorForm.location);
+    formData.append('Location', this.doctorForm.Location);
 
     if (this.doctorImageFile) {
       formData.append('DoctorImage', this.doctorImageFile);
     }
-
     if (this.clinicImageFile) {
       formData.append('ClinicImage', this.clinicImageFile);
     }
 
-    this.healthcare.createDoctor(formData).subscribe({
+    // --- NEW: Branch Logic between Update and Create ---
+    const requestObservable = this.isEditMode 
+      ? this.healthcare.updateDoctor(formData) 
+      : this.healthcare.createDoctor(formData);
+
+    requestObservable.subscribe({
       next: (res) => {
-
-        console.log("API Response:", res);
-
         if (res?.ResponseCode === 200) {
           this.closePopup();
           this.fetchDoctors();
@@ -231,6 +267,24 @@ export class Doctor {
         this.showErrorPopup = true;
       }
     });
+  }
+
+  resetForm() {
+    this.doctorForm = {
+      DoctorName: '',
+      HealthCareCategoryIds: [],
+      Qualification: '',
+      AboutDoctor: '',
+      Experience: null,
+      Phonenumber: '',
+      WhatsAppNumber: '',
+      Email: '',
+      Address: '',
+      Location: '',
+      IsActive: true
+    };
+    this.doctorImageFile = null as any;
+    this.clinicImageFile = null as any;
   }
 
   closePopup() {

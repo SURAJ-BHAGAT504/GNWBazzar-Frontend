@@ -20,10 +20,12 @@ export class Healthcarecategory {
 
   showPopup = false;
 
+  isEditMode = false;
+  editingCategoryId: number | null = null;
+
   formModel = {
     Category: '',
     CategoryMasterId: 0,
-    IsActive: true,
     CreatedOn: new Date()
   };
 
@@ -75,39 +77,67 @@ export class Healthcarecategory {
     this.showPopup = true;
   }
 
+  openUpdatePopup(category: any) {
+    this.isEditMode = true;
+    this.editingCategoryId = category.Id || category.HealthCareCategoryId; 
+
+    this.formModel = {
+      Category: category.Category,
+      CategoryMasterId: category.CategoryMasterId,
+      CreatedOn: category.CreatedOn
+    };
+
+    this.showPopup = true;
+  }
+
   closePopup() {
     this.showPopup = false;
+    this.isEditMode = false;
+    this.editingCategoryId = null;
+    
+    this.formModel = {
+      Category: '',
+      CategoryMasterId: 0,
+      CreatedOn: new Date()
+    };
   }
 
   saveCategory(form: any) {
-
     if (form.invalid) return;
 
-    const data = {
-      ...this.formModel,
-      CreatedOn: new Date().toISOString()
+    const payload = {
+      Id: this.isEditMode ? this.editingCategoryId : 0, 
+      Category: this.formModel.Category,
+      CategoryMasterId: Number(this.formModel.CategoryMasterId),
+      CreatedOn: this.isEditMode ? this.formModel.CreatedOn : new Date().toISOString()
     };
 
-    this.healthcare.createHealthCareCategory(data).subscribe({
-      next: (res) => {
-
-        if (res?.ResponseCode === 200) {
-
-          this.closePopup();
-          this.fetchCategories();
-
-          this.formModel = {
-            Category: '',
-            CategoryMasterId: 0,
-            IsActive: true,
-            CreatedOn: new Date()
-          };
+    if (this.isEditMode && this.editingCategoryId !== null) {
+      this.healthcare.updateHealthCareCategory(payload).subscribe({
+        next: (res) => {
+          if (res?.ResponseCode === 200) {
+            this.closePopup();
+            this.fetchCategories();
+          }
+        },
+        error: (err) => {
+          console.error(err);
+          alert(err.error?.Message || "Update failed");
         }
-      },
-      error: (err) => {
-        console.error(err);
-        alert(err.error?.Message || "Error occurred");
-      }
-    });
+      });
+    } else {
+      this.healthcare.createHealthCareCategory(payload).subscribe({
+        next: (res) => {
+          if (res?.ResponseCode === 200) {
+            this.closePopup();
+            this.fetchCategories();
+          }
+        },
+        error: (err) => {
+          console.error(err);
+          alert(err.error?.Message || "Creation failed");
+        }
+      });
+    }
   }
 }

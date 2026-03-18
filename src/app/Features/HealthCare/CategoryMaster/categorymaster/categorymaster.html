@@ -23,6 +23,7 @@
           <th>Description</th>
           <th>Created On</th>
           <th>Status</th>
+          <th>Action</th>
         </tr>
       </thead>
 
@@ -37,6 +38,9 @@
             <span [ngClass]="c.IsActive ? 'active-badge' : 'inactive-badge'">
               {{ c.IsActive ? 'Active' : 'Inactive' }}
             </span>
+          </td>
+          <td>
+            <button class="edit-btn" (click)="openUpdatePopup(c)">Update</button>
           </td>
         </tr>
 
@@ -54,50 +58,40 @@
 <!-- CREATE POPUP -->
 
 <div class="popup-overlay" *ngIf="showCreatePopup">
-
   <div class="popup-container">
-
     <div class="popup-header">
-      <h3>Create Category</h3>
+      <h3>{{ isEditMode ? 'Update' : 'Create' }} Category</h3>
       <button class="close-btn" (click)="closePopup()">✖</button>
     </div>
 
     <form #formRef="ngForm" (ngSubmit)="saveCategory(formRef)" class="popup-body">
-
       <div class="form-group">
         <label>Category Name</label>
-        <input type="text"
-               required
-               name="CategoryName"
-               [(ngModel)]="categoryForm.CategoryName"
-               #CategoryName="ngModel">
-
-        <small class="error"
-          *ngIf="CategoryName.invalid && CategoryName.touched">
+        <input type="text" required name="CategoryName" [(ngModel)]="categoryForm.CategoryName" #CategoryName="ngModel">
+        <small class="error" *ngIf="CategoryName.invalid && CategoryName.touched">
           Category name required
         </small>
       </div>
 
       <div class="form-group">
         <label>Description</label>
-        <textarea name="Description"
-                  [(ngModel)]="categoryForm.Description"></textarea>
+        <textarea name="Description" [(ngModel)]="categoryForm.Description"></textarea>
+      </div>
+
+      <div class="form-group checkbox-group" *ngIf="isEditMode">
+        <label>
+          <input type="checkbox" name="IsActive" [(ngModel)]="categoryForm.IsActive">
+          Is Active
+        </label>
       </div>
 
       <div class="popup-actions">
-        <button type="button" class="cancel-btn" (click)="closePopup()">
-          Cancel
-        </button>
-
-        <button type="submit"
-                class="save-btn"
-                [disabled]="formRef.invalid">
-          Save Category
+        <button type="button" class="cancel-btn" (click)="closePopup()">Cancel</button>
+        <button type="submit" class="save-btn" [disabled]="formRef.invalid">
+          {{ isEditMode ? 'Update Category' : 'Save Category' }}
         </button>
       </div>
-
     </form>
-
   </div>
 </div>
 
