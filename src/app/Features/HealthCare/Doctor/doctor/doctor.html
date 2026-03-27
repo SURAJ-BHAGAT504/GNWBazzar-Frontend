@@ -3,6 +3,11 @@
     <div class="doctor-header">
         <h2>🩺 Doctors List</h2>
 
+        <div class="search-container" style="flex: 1; margin: 0 20px;">
+            <input type="text" [(ngModel)]="searchTerm" placeholder="Search anything (Name, Phone, Category, etc.)..."
+                style="width: 40%; padding: 10px; border-radius: 8px; border: 1px solid #ccc;">
+        </div>
+
         <button class="create-btn" (click)="goToCreateDoctor()">
             + Create Doctor
         </button>
@@ -24,15 +29,13 @@
                     <th>Doctor Image</th>
                     <th>Name</th>
                     <th>Category</th>
-                    <th>Qualification</th>
-                    <th>Experience</th>
-                    <th>About Doctor</th>
+                    <th class="col-about">Highlights</th>
                     <th>Phone Number</th>
                     <th>WhatsApp Number</th>
-                    <th>Email</th>
+                    <th>End Date</th>
                     <th>Clinic Image</th>
-                    <th>Address</th>
-                    <th>Location</th>
+                    <th class="col-address">Address</th>
+                    <th class="col-location">Location</th>
                     <th>Created On</th>
                     <th>Status</th>
                     <th>Action</th>
@@ -40,65 +43,59 @@
             </thead>
 
             <tbody>
-
-                <tr *ngFor="let doctor of doctors; let i = index">
-
+                <tr *ngFor="let doctor of filteredDoctors; let i = index">
                     <td>{{ i + 1 }}</td>
 
                     <td>
                         <img [src]="doctor.DoctorImagePath && doctor.DoctorImagePath.trim() !== '' 
-        ? getImageUrl(doctor.DoctorImagePath) 
-        : 'https://cdn-icons-png.flaticon.com/512/387/387561.png'"
+                ? getImageUrl(doctor.DoctorImagePath) 
+                : 'https://cdn-icons-png.flaticon.com/512/387/387561.png'"
                             (error)="$event.target.src='https://cdn-icons-png.flaticon.com/512/387/387561.png'"
                             width="80" style="cursor:pointer" (click)="openImageNewTab(doctor.DoctorImagePath)">
                     </td>
 
                     <td>{{ doctor.DoctorName }}</td>
-
-                    <td>
-                        {{ getCategoryNames(doctor) }}
+                    <td>{{ getCategoryNames(doctor) }}</td>
+                    <td class="col-about">
+                        <div class="wrap-text">{{ doctor.AboutDoctor }}</div>
                     </td>
-
-                    <td>{{ doctor.Qualification }}</td>
-
-                    <td>{{ doctor.Experience }} yrs</td>
-
-                    <td>{{ doctor.AboutDoctor }}</td>
-
                     <td>{{ doctor.Phonenumber }}</td>
-
                     <td>{{ doctor.WhatsAppNumber }}</td>
-
-                    <td>{{ doctor.Email }}</td>
-
+                    <td>{{ doctor.EndDate }}</td>
                     <td>
                         <img [src]="doctor.ClinicImagePath && doctor.ClinicImagePath.trim() !== ''
-        ? getImageUrl(doctor.ClinicImagePath)
-        : 'https://cdn-icons-png.flaticon.com/512/2967/2967350.png'"
+                ? getImageUrl(doctor.ClinicImagePath)
+                : 'https://cdn-icons-png.flaticon.com/512/2967/2967350.png'"
                             (error)="$event.target.src='https://cdn-icons-png.flaticon.com/512/2967/2967350.png'"
                             width="80" style="cursor:pointer" (click)="openImageNewTab(doctor.ClinicImagePath)">
                     </td>
-
-                    <td>{{ doctor.Address }}</td>
-
-                    <td>{{ doctor.Location }}</td>
-
+                    <td class="col-address">
+                        <div class="wrap-text">{{ doctor.Address }}</div>
+                    </td>
+                    <td class="col-location">
+                        <div class="wrap-text">{{ doctor.Location }}</div>
+                    </td>
                     <td>{{ doctor.CreatedOn | date:'medium' }}</td>
-
                     <td>
                         <span [ngClass]="doctor.IsActive ? 'active-badge' : 'inactive-badge'">
                             {{ doctor.IsActive ? 'Active' : 'Inactive' }}
                         </span>
                     </td>
-
-                    <td>
-                        <button class="edit-btn" (click)="openUpdatePopup(doctor)">Update</button>
-                    </td>
-
+                    <td><button class="edit-btn" (click)="openUpdatePopup(doctor)">Update</button></td>
                 </tr>
 
+                <tr *ngIf="filteredDoctors.length === 0 && !loading">
+                    <td colspan="14" class="no-results-cell">
+                        <div class="no-results-content">
+                            <h3>No Doctors Found</h3>
+                            <p>We couldn't find any matches for "<strong>{{searchTerm}}</strong>"</p>
+                            <button type="button" class="btn btn-primary" (click)="searchTerm = ''">
+                                Clear Search
+                            </button>
+                        </div>
+                    </td>
+                </tr>
             </tbody>
-
         </table>
 
     </div>
@@ -120,7 +117,7 @@
         </div>
 
         <form #doctorFormRef="ngForm" class="popup-body" (ngSubmit)="saveDoctor(doctorFormRef)">
-            
+
             <div class="form-group">
                 <label>Name</label>
                 <input type="text" name="DoctorName" required [(ngModel)]="doctorForm.DoctorName" #DoctorName="ngModel">
@@ -134,7 +131,8 @@
                     <span class="arrow-icon">{{ showDropdown ? '▲' : '▼' }}</span>
                 </div>
                 <div class="multiselect-list" *ngIf="showDropdown">
-                    <div class="list-item" *ngFor="let c of categories" (click)="toggleCategory(c.Id); $event.stopPropagation()">
+                    <div class="list-item" *ngFor="let c of categories"
+                        (click)="toggleCategory(c.Id); $event.stopPropagation()">
                         <input type="checkbox" [checked]="isCategorySelected(c.Id)">
                         <span>{{ c.Category }}</span>
                     </div>
@@ -142,40 +140,37 @@
             </div>
 
             <div class="form-group">
-                <label>Experience</label>
-                <input type="number" name="Experience" required min="1" [(ngModel)]="doctorForm.Experience" #Experience="ngModel">
-                <small class="error" *ngIf="Experience.invalid && Experience.touched">Experience must be greater than 0</small>
-            </div>
-
-            <div class="form-group">
                 <label>Phone</label>
-                <input type="text" name="Phonenumber" required maxlength="10" pattern="^[0-9]{10}$" [(ngModel)]="doctorForm.Phonenumber" #Phonenumber="ngModel">
-                <small class="error" *ngIf="Phonenumber.errors?.['required'] && Phonenumber.touched">Phone number is required</small>
-                <small class="error" *ngIf="Phonenumber.errors?.['pattern'] && Phonenumber.touched">Phone must be exactly 10 digits</small>
+                <input type="text" name="Phonenumber" required maxlength="10" pattern="^[0-9]{10}$"
+                    [(ngModel)]="doctorForm.Phonenumber" #Phonenumber="ngModel">
+                <small class="error" *ngIf="Phonenumber.errors?.['required'] && Phonenumber.touched">Phone number is
+                    required</small>
+                <small class="error" *ngIf="Phonenumber.errors?.['pattern'] && Phonenumber.touched">Phone must be
+                    exactly 10 digits</small>
             </div>
 
             <div class="form-group">
                 <label>WhatsApp Number</label>
-                <input type="text" name="WhatsAppNumber" required maxlength="10" pattern="^[0-9]{10}$" [(ngModel)]="doctorForm.WhatsAppNumber" #WhatsAppNumber="ngModel">
-                <small class="error" *ngIf="WhatsAppNumber.errors?.['required'] && WhatsAppNumber.touched">WhatsApp number is required</small>
-                <small class="error" *ngIf="WhatsAppNumber.errors?.['pattern'] && WhatsAppNumber.touched">WhatsApp number must be exactly 10 digits</small>
-            </div>
-
-            <div class="form-group">
-                <label>Email</label>
-                <input type="email" name="Email" required [(ngModel)]="doctorForm.Email" #Email="ngModel">
-                <small class="error" *ngIf="Email.invalid && Email.touched">Valid email required</small>
-            </div>
-
-            <div class="form-group">
-                <label>Qualification</label>
-                <input type="text" name="Qualification" [(ngModel)]="doctorForm.Qualification">
+                <input type="text" name="WhatsAppNumber" required maxlength="10" pattern="^[0-9]{10}$"
+                    [(ngModel)]="doctorForm.WhatsAppNumber" #WhatsAppNumber="ngModel">
+                <small class="error" *ngIf="WhatsAppNumber.errors?.['required'] && WhatsAppNumber.touched">WhatsApp
+                    number is required</small>
+                <small class="error" *ngIf="WhatsAppNumber.errors?.['pattern'] && WhatsAppNumber.touched">WhatsApp
+                    number must be exactly 10 digits</small>
             </div>
 
             <div class="form-group">
                 <label>Address</label>
-                <input type="text" name="Address" required [(ngModel)]="doctorForm.Address" #Address="ngModel">
-                <small class="error" *ngIf="Address.invalid && Address.touched">Address required</small>
+                <input type="text" name="Address" required maxlength="100" [(ngModel)]="doctorForm.Address"
+                    #Address="ngModel">
+
+                <div class="char-count" style="text-align: right; font-size: 12px; color: #6b7280;">
+                    {{ doctorForm.Address?.length || 0 }} / 100
+                </div>
+
+                <small class="error" *ngIf="Address.invalid && Address.touched">
+                    Address is required (max 100 characters)
+                </small>
             </div>
 
             <div class="form-group">
@@ -183,24 +178,37 @@
                 <input type="text" name="Location" required [(ngModel)]="doctorForm.Location" #Location="ngModel">
                 <small class="error" *ngIf="Location.invalid && Location.touched">Location required</small>
             </div>
-            
+
             <div class="form-group">
-                <label>About Doctor</label>
-                <textarea name="AboutDoctor" [(ngModel)]="doctorForm.AboutDoctor"></textarea>
+                <label>Highlights</label>
+                <textarea name="AboutDoctor" maxlength="200" [(ngModel)]="doctorForm.AboutDoctor"> </textarea>
+
+                <div class="char-count" style="text-align: right; font-size: 12px; color: #6b7280;">
+                    {{ doctorForm.AboutDoctor?.length || 0 }} / 200
+                </div>
             </div>
 
             <div class="form-group">
-                <label>Doctor Image <span *ngIf="isEditMode" style="color: #6b7280; font-weight: normal;">(Leave empty to keep current)</span></label>
+                <label>End Date</label>
+                <input type="date" name="EndDate" [(ngModel)]="doctorForm.EndDate" #EndDate="ngModel">
+            </div>
+
+            <div class="form-group">
+                <label>Doctor Image <span *ngIf="isEditMode" style="color: #6b7280; font-weight: normal;">(Leave empty
+                        to keep current)</span></label>
                 <input type="file" (change)="onDoctorImageChange($event)" #doctorImageInput>
-                <button type="button" class="cancel-btn image-clear-btn" *ngIf="doctorImageFile" (click)="clearDoctorImage(doctorImageInput)">Clear Image</button>
+                <button type="button" class="cancel-btn image-clear-btn" *ngIf="doctorImageFile"
+                    (click)="clearDoctorImage(doctorImageInput)">Clear Image</button>
             </div>
 
             <div class="form-group">
-                <label>Clinic Image <span *ngIf="isEditMode" style="color: #6b7280; font-weight: normal;">(Leave empty to keep current)</span></label>
+                <label>Clinic Image <span *ngIf="isEditMode" style="color: #6b7280; font-weight: normal;">(Leave empty
+                        to keep current)</span></label>
                 <input type="file" (change)="onClinicImageChange($event)" #clinicImageInput>
-                <button type="button" class="cancel-btn image-clear-btn" *ngIf="clinicImageFile" (click)="clearClinicImage(clinicImageInput)">Clear Image</button>
+                <button type="button" class="cancel-btn image-clear-btn" *ngIf="clinicImageFile"
+                    (click)="clearClinicImage(clinicImageInput)">Clear Image</button>
             </div>
-            
+
             <div class="form-group checkbox-group" *ngIf="isEditMode">
                 <label>
                     <input type="checkbox" name="IsActive" [(ngModel)]="doctorForm.IsActive">

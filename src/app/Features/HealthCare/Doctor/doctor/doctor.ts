@@ -1,13 +1,14 @@
 import { Component, inject } from '@angular/core';
 import { Healthcare } from '../../../../Core/Services/healthcare';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, formatDate } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
+import { SearchPipe } from '../../../../Shared/Pipes/search-pipe';
 
 @Component({
   selector: 'app-doctor',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, SearchPipe],
   templateUrl: './doctor.html',
   styleUrl: './doctor.css',
 })
@@ -17,6 +18,8 @@ export class Doctor {
   router = inject(Router);
 
   baseUrl = 'https://gnwbazaar-002-site2.qtempurl.com/';
+
+  searchTerm: string = '';
 
   doctors: any[] = [];
   categories: any[] = [];
@@ -34,14 +37,12 @@ export class Doctor {
   doctorForm: any = {
     DoctorName: '',
     HealthCareCategoryIds: [],
-    Qualification: '',
     AboutDoctor: '',
-    Experience: null,
     Phonenumber: '',
     WhatsAppNumber: '',
-    Email: '',
     Address: '',
     Location: '',
+    EndDate: '',
     IsActive: true
   };
 
@@ -84,6 +85,32 @@ export class Doctor {
     });
   }
 
+get filteredDoctors() {
+  if (!this.searchTerm || !this.searchTerm.trim()) {
+    return this.doctors;
+  }
+
+  const term = this.searchTerm.toLowerCase();
+
+  return this.doctors.filter(doc => {
+    const name = (doc.DoctorName || '').toLowerCase();
+    const phone = (doc.Phonenumber || '').toLowerCase();
+    const whatsapp = (doc.WhatsAppNumber || '').toLowerCase();
+    const address = (doc.Address || '').toLowerCase();
+    const location = (doc.Location || '').toLowerCase();
+    const about = (doc.AboutDoctor || '').toLowerCase();
+    const categories = this.getCategoryNames(doc).toLowerCase();
+
+    return name.includes(term) || 
+           phone.includes(term) || 
+           whatsapp.includes(term) || 
+           address.includes(term) || 
+           location.includes(term) || 
+           about.includes(term) || 
+           categories.includes(term);
+  });
+}
+
   getCategoryNames(doctor: any): string {
     const ids = doctor.HealthCareCategoryIds;
 
@@ -117,14 +144,12 @@ export class Doctor {
     this.doctorForm = {
       DoctorName: doctor.DoctorName,
       HealthCareCategoryIds: [...(doctor.HealthCareCategoryIds || [])], 
-      Qualification: doctor.Qualification,
       AboutDoctor: doctor.AboutDoctor,
-      Experience: doctor.Experience,
       Phonenumber: doctor.Phonenumber,
       WhatsAppNumber: doctor.WhatsAppNumber,
-      Email: doctor.Email,
       Address: doctor.Address,
       Location: doctor.Location,
+      EndDate: formatDate(doctor.EndDate, 'yyyy-MM-dd', 'en'),
       IsActive: doctor.IsActive
     };
 
@@ -230,14 +255,12 @@ export class Doctor {
     this.doctorForm.HealthCareCategoryIds.forEach((id: any) => {
       formData.append('HealthCareCategoryIds', id);
     });
-    formData.append('Qualification', this.doctorForm.Qualification);
     formData.append('AboutDoctor', this.doctorForm.AboutDoctor);
-    formData.append('Experience', this.doctorForm.Experience);
     formData.append('Phonenumber', this.doctorForm.Phonenumber);
     formData.append('WhatsAppNumber', this.doctorForm.WhatsAppNumber);
-    formData.append('Email', this.doctorForm.Email);
     formData.append('Address', this.doctorForm.Address);
     formData.append('Location', this.doctorForm.Location);
+    formData.append('EndDate', this.doctorForm.EndDate);
 
     if (this.doctorImageFile) {
       formData.append('DoctorImage', this.doctorImageFile);
@@ -273,14 +296,12 @@ export class Doctor {
     this.doctorForm = {
       DoctorName: '',
       HealthCareCategoryIds: [],
-      Qualification: '',
       AboutDoctor: '',
-      Experience: null,
       Phonenumber: '',
       WhatsAppNumber: '',
-      Email: '',
       Address: '',
       Location: '',
+      EndDatte: '',
       IsActive: true
     };
     this.doctorImageFile = null as any;

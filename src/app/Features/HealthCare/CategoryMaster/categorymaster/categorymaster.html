@@ -3,6 +3,11 @@
   <div class="category-header">
     <h2>🗂 Category Master</h2>
 
+    <div class="search-container" style="flex: 1; margin: 0 20px;">
+      <input type="text" [(ngModel)]="searchTerm" placeholder="Search categories by name or description..."
+        class="search-input">
+    </div>
+
     <button class="create-btn" (click)="openCreatePopup()">
       + Create Category
     </button>
@@ -28,8 +33,7 @@
       </thead>
 
       <tbody>
-
-        <tr *ngFor="let c of categories; let i = index">
+        <tr *ngFor="let c of filteredCategories; let i = index">
           <td>{{i + 1}}</td>
           <td>{{c.CategoryName}}</td>
           <td>{{c.Description}}</td>
@@ -44,6 +48,17 @@
           </td>
         </tr>
 
+        <tr *ngIf="filteredCategories.length === 0">
+          <td colspan="6" class="no-results-cell">
+            <div class="no-results-content">
+              <h3>No Categories Found</h3>
+              <p>We couldn't find any matches for "<strong>{{searchTerm}}</strong>"</p>
+              <button type="button" class="clear-search-btn" (click)="searchTerm = ''">
+                Clear Search
+              </button>
+            </div>
+          </td>
+        </tr>
       </tbody>
 
     </table>

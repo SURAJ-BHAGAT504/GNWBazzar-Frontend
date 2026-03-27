@@ -468,3 +468,192 @@ select.ng-invalid.ng-touched {
     accent-color: #2563eb;
     margin: 0;
 }
+
+/* 1. Set a fixed width for the About column */
+.doctor-table .col-about {
+    width: 400px;           /* Adjust this width as needed */
+    min-width: 400px;
+}
+
+.wrap-text {
+    white-space: normal;    /* Allows text to wrap to the next line */
+    word-wrap: break-word;  /* Breaks very long words if necessary */
+    line-height: 1.4;       /* Adds a bit of space between lines for readability */
+    max-height: 100px;      /* Optional: limits the height so one row isn't huge */
+    overflow-y: auto;       /* Optional: adds a scrollbar if the text is too long */
+    display: block;
+}
+
+.doctor-table td {
+    vertical-align: top;
+    padding: 10px;
+}
+
+.wrap-text {
+    white-space: normal !important; /* Forces text to wrap to next line */
+    word-break: break-word;         /* Breaks long words if needed */
+    line-height: 1.4;
+    display: block;
+}
+
+.doctor-table .col-about {
+    width: 400px;
+    min-width: 400px;
+}
+
+.doctor-table .col-address {
+    width: 400px;
+    min-width: 400px;
+}
+
+.doctor-table .col-location {
+    width: 400px;
+    min-width: 400px;
+}
+
+.doctor-table td {
+    vertical-align: top;
+    padding: 12px 8px;
+}
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.search-box {
+    flex: 1;
+    max-width: 500px;
+    margin: 0 20px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px 16px;
+    border: 1px solid #ced4da;
+    border-radius: 20px; /* Rounded look */
+    outline: none;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.search-input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 8px rgba(37, 99, 235, 0.2);
+}
+
+/* --- 1. SEARCH BAR STYLING --- */
+.search-container {
+    flex: 1;
+    display: flex; /* Centers the search bar in the header */
+}
+
+.search-input {
+    width: 100%;
+    max-width: 500px;
+    padding: 10px 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+    background: #f9fafb;
+    outline: none;
+    transition: all 0.2s ease;
+    color: #374151;
+}
+
+.search-input:focus {
+    background: #fff;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
+/* --- 2. NO RESULTS (EMPTY STATE) STYLING --- */
+.no-results-cell {
+    padding: 80px 0 !important; /* Large padding to center vertically */
+    background-color: #f9fafb;
+    text-align: center;
+}
+
+.no-results-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.icon-circle {
+    font-size: 40px;
+    background: #f3f4f6;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    color: #9ca3af;
+}
+
+.no-results-content h3 {
+    margin: 0;
+    color: #111827;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.no-results-content p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.clear-search-btn {
+    margin-top: 10px;
+    padding: 8px 24px;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.clear-search-btn:hover {
+    background-color: #1d4ed8;
+}
+
+/* --- 3. BADGE STYLING (ACTIVE/INACTIVE) --- */
+.active-badge {
+    background-color: #dcfce7;
+    color: #166534;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.inactive-badge {
+    background-color: #fee2e2;
+    color: #991b1b;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+/* --- 4. TEXT WRAPPING FOR LONG CONTENT --- */
+.wrap-text {
+    white-space: normal !important;
+    word-break: break-word;
+    line-height: 1.4;
+    display: block;
+}
+
+.col-about { width: 250px; min-width: 200px; }
+.col-address { width: 200px; min-width: 150px; }
+.col-location { width: 150px; min-width: 120px; }

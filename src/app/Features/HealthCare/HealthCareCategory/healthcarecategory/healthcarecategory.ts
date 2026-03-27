@@ -18,6 +18,8 @@ export class Healthcarecategory {
   categoryMasters: any[] = [];
   loading = false;
 
+  searchTerm: string = '';
+
   showPopup = false;
 
   isEditMode = false;
@@ -72,6 +74,21 @@ export class Healthcarecategory {
 
     return master ? master.CategoryName : 'N/A';
   }
+
+  get filteredCategories() {
+  if (!this.searchTerm || !this.searchTerm.trim()) {
+    return this.categories;
+  }
+
+  const term = this.searchTerm.toLowerCase();
+
+  return this.categories.filter(c => {
+    const categoryName = (c.Category || '').toLowerCase();
+    const masterName = this.getCategoryMasterName(c.CategoryMasterId).toLowerCase();
+    
+    return categoryName.includes(term) || masterName.includes(term);
+  });
+}
 
   openPopup() {
     this.showPopup = true;

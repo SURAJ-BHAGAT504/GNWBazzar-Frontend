@@ -8,7 +8,7 @@
 
     <div class="user-profile-wrapper">
       <div class="home-trigger" routerLink="/dashboard" title="Go to Home">
-        <span class="icon-home">🏠</span>
+        <span class="icon-home" (click)="isSidebarOpen = false">🏠</span>
       </div>
 
       <div class="user-trigger" (click)="toggleUserMenu()">👤</div>
@@ -40,16 +40,15 @@
             </a>
           </li>
           <li>
-            <a routerLink="categorymaster" routerLinkActive="active-link" (click)="isSidebarOpen = false">
-              Category Master
-            </a>
-          </li>
-          <li>
             <a routerLink="healthcarecategory" routerLinkActive="active-link" (click)="isSidebarOpen = false">
               Healthcare Category
             </a>
           </li>
         </ul>
+
+        <div class="nav-header-sm" routerLink="categorymaster" routerLinkActive="active-link" (click)="isSidebarOpen = false">
+          <span>Main Category</span>
+        </div>
       </li>
     </ul>
   </div>

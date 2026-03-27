@@ -15,6 +15,8 @@ export class Categorymaster {
   categories: any[] = [];
   loading = false;
 
+  searchTerm: string = '';
+
   showCreatePopup = false;
   showErrorPopup = false;
   backendErrorMessage = '';
@@ -55,6 +57,21 @@ export class Categorymaster {
       }
     });
   }
+
+  get filteredCategories() {
+  if (!this.searchTerm || !this.searchTerm.trim()) {
+    return this.categories;
+  }
+
+  const term = this.searchTerm.toLowerCase();
+
+  return this.categories.filter(c => {
+    const name = (c.CategoryName || '').toLowerCase();
+    const desc = (c.Description || '').toLowerCase();
+    
+    return name.includes(term) || desc.includes(term);
+  });
+}
 
   openCreatePopup() {
     this.showCreatePopup = true;

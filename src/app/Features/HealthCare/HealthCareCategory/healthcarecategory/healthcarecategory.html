@@ -3,6 +3,11 @@
     <div class="category-header">
         <h2>📑 Healthcare Categories</h2>
 
+        <div class="search-container" style="flex: 1; margin: 0 20px;">
+            <input type="text" [(ngModel)]="searchTerm" placeholder="Search by category or master name..."
+                class="search-input">
+        </div>
+
         <button class="create-btn" (click)="openPopup()">
             + Add Category
         </button>
@@ -27,8 +32,7 @@
             </thead>
 
             <tbody>
-
-                <tr *ngFor="let c of categories; let i = index">
+                <tr *ngFor="let c of filteredCategories; let i = index">
                     <td>{{ i + 1 }}</td>
                     <td>{{ c.Category }}</td>
                     <td>{{ getCategoryMasterName(c.CategoryMasterId) }}</td>
@@ -38,6 +42,17 @@
                     </td>
                 </tr>
 
+                <tr *ngIf="filteredCategories.length === 0">
+                    <td colspan="5" class="no-results-cell">
+                        <div class="no-results-content">
+                            <h3>No Categories Found</h3>
+                            <p>We couldn't find any matches for "<strong>{{searchTerm}}</strong>"</p>
+                            <button type="button" class="clear-search-btn" (click)="searchTerm = ''">
+                                Clear Search
+                            </button>
+                        </div>
+                    </td>
+                </tr>
             </tbody>
 
         </table>
@@ -61,7 +76,8 @@
 
             <div class="form-group">
                 <label>Category Name</label>
-                <input type="text" required name="CategoryName" [(ngModel)]="formModel.Category" #CategoryName="ngModel">
+                <input type="text" required name="CategoryName" [(ngModel)]="formModel.Category"
+                    #CategoryName="ngModel">
                 <small class="error" *ngIf="CategoryName.touched && CategoryName.invalid">
                     Category name required
                 </small>
@@ -69,7 +85,8 @@
 
             <div class="form-group">
                 <label>Category Master</label>
-                <select name="CategoryMasterId" required [(ngModel)]="formModel.CategoryMasterId" #CategoryMasterId="ngModel">
+                <select name="CategoryMasterId" required [(ngModel)]="formModel.CategoryMasterId"
+                    #CategoryMasterId="ngModel">
                     <option value="" disabled>Select Category Master</option>
                     <option *ngFor="let m of categoryMasters" [value]="m.Id">
                         {{ m.CategoryName }}
