@@ -61,8 +61,8 @@ export class Sponsor implements OnInit {
   get filteredSponsors() {
     if (!this.searchTerm.trim()) return this.sponsors;
     const term = this.searchTerm.toLowerCase();
-    return this.sponsors.filter(s => 
-      (s.ClientName || '').toLowerCase().includes(term) || 
+    return this.sponsors.filter(s =>
+      (s.ClientName || '').toLowerCase().includes(term) ||
       (s.SponsorProduct || '').toLowerCase().includes(term) ||
       (s.Email || '').toLowerCase().includes(term) ||
       (s.PhoneNumber || '').toLowerCase().includes(term) ||
@@ -102,17 +102,20 @@ export class Sponsor implements OnInit {
     this.showCreatePopup = true;
   }
 
+  clearSponsorImage(input: HTMLInputElement) {
+    this.sponsorFileToUpload = null;
+    input.value = '';
+  }
+
   saveSponsor(form: NgForm) {
     if (form.invalid) return;
 
     const formData = new FormData();
-    
-    // Primary ID for Updates
+
     if (this.isEditMode && this.editingSponsorId) {
       formData.append('Id', this.editingSponsorId.toString());
     }
 
-    // Append exactly what is in your DTO (Excluding SponsorFilePath)
     formData.append('ClientName', this.sponsorForm.ClientName);
     formData.append('Description', this.sponsorForm.Description);
     formData.append('PhoneNumber', this.sponsorForm.PhoneNumber);
@@ -124,13 +127,12 @@ export class Sponsor implements OnInit {
     formData.append('IsActive', this.sponsorForm.IsActive.toString());
     formData.append('CreatedBy', this.sponsorForm.CreatedBy);
 
-    // IFormFile mapped from file upload
     if (this.sponsorFileToUpload) {
       formData.append('SponsorFile', this.sponsorFileToUpload);
     }
 
-    const request = this.isEditMode 
-      ? this.sponsorService.updateSponsor(formData) 
+    const request = this.isEditMode
+      ? this.sponsorService.updateSponsor(formData)
       : this.sponsorService.createSponsor(formData);
 
     request.subscribe({
@@ -167,10 +169,10 @@ export class Sponsor implements OnInit {
   }
 
   resetForm() {
-    this.sponsorForm = { 
-      ClientName: '', Description: '', PhoneNumber: '', Email: '', 
-      SponsorType: '', SponsorProduct: '', StartDate: '', EndDate: '', 
-      IsActive: true, CreatedBy: 'Admin' 
+    this.sponsorForm = {
+      ClientName: '', Description: '', PhoneNumber: '', Email: '',
+      SponsorType: '', SponsorProduct: '', StartDate: '', EndDate: '',
+      IsActive: true, CreatedBy: 'Admin'
     };
     this.sponsorFileToUpload = null;
   }

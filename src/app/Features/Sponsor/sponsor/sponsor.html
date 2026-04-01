@@ -49,16 +49,16 @@
                     <td><button class="edit-btn" (click)="openUpdatePopup(s)">Update</button></td>
                 </tr>
                 <tr *ngIf="filteredSponsors.length === 0">
-                <td colspan="11" class="no-results-cell">
-                    <div class="no-results-content">
-                        <h3>No Sponsors Found</h3>
-                        <p>We couldn't find any matches for "<strong>{{searchTerm}}</strong>"</p>
-                        <button type="button" class="btn btn-primary" (click)="searchTerm = ''">
-                            Clear Search
-                        </button>
-                    </div>
-                </td>
-            </tr>
+                    <td colspan="11" class="no-results-cell">
+                        <div class="no-results-content">
+                            <h3>No Sponsors Found</h3>
+                            <p>We couldn't find any matches for "<strong>{{searchTerm}}</strong>"</p>
+                            <button type="button" class="btn btn-primary" (click)="searchTerm = ''">
+                                Clear Search
+                            </button>
+                        </div>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -113,7 +113,14 @@
                     </div>
                     <div class="form-group">
                         <label>Upload Logo (Sponsor File)</label>
-                        <input type="file" (change)="onFileChange($event)">
+                        <div class="file-input-wrapper">
+                            <input type="file" (change)="onFileChange($event)" #logoInput>
+                        </div>
+
+                        <button type="button" class="image-clear-btn" *ngIf="sponsorFileToUpload"
+                            (click)="clearSponsorImage(logoInput)">
+                            Clear Image
+                        </button>
                     </div>
                     <div class="form-group">
                         <label>End Date</label>

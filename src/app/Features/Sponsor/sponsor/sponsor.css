@@ -225,24 +225,28 @@
     font-size: 14px;
 }
 
-.clear-search-btn {
-    margin-top: 10px;
-    padding: 10px 24px;
-    background-color: #2563eb;
-    color: white;
+.file-input-wrapper {
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    padding: 8px;
+    background: #fff;
+    margin-bottom: 8px;
+}
+
+.image-clear-btn {
+    width: 100%;            
+    background: #fee2e2;     
+    color: #b91c1c;          
     border: none;
-    border-radius: 8px;
+    padding: 8px 0;
+    border-radius: 25px;     
+    font-size: 12px;
+    font-weight: 500;
     cursor: pointer;
-    font-weight: 600;
-    font-size: 14px;
-    transition: background 0.2s, transform 0.1s;
+    text-align: center;
+    transition: background 0.2s ease;
 }
 
-.clear-search-btn:hover {
-    background-color: #1d4ed8;
-    transform: translateY(-1px);
-}
-
-.clear-search-btn:active {
-    transform: translateY(0);
+.image-clear-btn:hover {
+    background: #fecaca;    
 }
