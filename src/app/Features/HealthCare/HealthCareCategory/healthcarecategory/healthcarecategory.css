@@ -1,133 +1,131 @@
 /* =========================================
-   1. CATEGORY WRAPPER
-   ========================================= */
+    MAIN WRAPPER
+========================================= */
 .category-wrapper {
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 10px;
     padding: 20px;
-    width: 100%;
-    box-sizing: border-box;
+    background-color: #f9fafb;
+    min-height: 100vh;
     font-family: 'Inter', system-ui, sans-serif;
 }
 
 /* =========================================
-   2. HEADER & ACTION BUTTON
-   ========================================= */
+    HEADER & SEARCH
+========================================= */
 .category-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .category-header h2 {
+    margin: 0;
     font-size: 18px;
     font-weight: 600;
     color: #111827;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+}
+
+.search-container {
+    flex: 1;
+    margin: 0 20px;
+}
+
+.search-input {
+    width: 100%;
+    max-width: 450px;
+    padding: 10px 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.2s ease;
+    background: #f9fafb;
+}
+
+.search-input:focus {
+    background: #fff;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .create-btn {
     background: #2563eb;
     color: white;
     border: none;
-    padding: 10px 16px;
+    padding: 10px 20px;
     border-radius: 8px;
-    font-size: 13px;
-    font-weight: 500;
     cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    gap: 6px;
+    font-weight: 600;
+    font-size: 13px;
+    transition: background 0.2s;
 }
 
 .create-btn:hover {
-    background: #1e40af;
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    background: #1d4ed8;
 }
 
 /* =========================================
-   3. TABLE (DATE & ALIGNMENT FIX)
-   ========================================= */
+    TABLE STYLING (Wider & Consistent)
+========================================= */
 .table-container {
-    width: 100%;
+    background: white;
+    border-radius: 12px;
     overflow-x: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    background: #ffffff;
 }
 
 .doctor-table {
     width: 100%;
     border-collapse: collapse;
-    /* Changed to 'auto' so columns expand to fit dates */
-    table-layout: auto; 
-}
-
-.doctor-table thead {
-    background: #f9fafb;
-}
-
-.doctor-table th, 
-.doctor-table td {
-    padding: 14px 16px;
-    font-size: 13px;
-    text-align: left;
-    border: 1px solid #e5e7eb; /* Full Grid Borders */
-    vertical-align: middle;
+    /* Sufficient width to let 5 columns breathe */
+    min-width: 1000px; 
 }
 
 .doctor-table th {
-    color: #6b7280;
+    background: #f3f4f6;
+    padding: 16px 20px;
+    text-align: center;
+    font-size: 13px;
+    color: #4b5563;
     font-weight: 600;
+    border-bottom: 2px solid #e5e7eb;
+    border-right: 1px solid #e5e7eb;
     white-space: nowrap;
 }
 
 .doctor-table td {
+    padding: 16px 20px;
+    border-bottom: 1px solid #e5e7eb;
+    border-right: 1px solid #e5e7eb;
+    font-size: 13px;
     color: #374151;
-}
-
-.doctor-table th,
-.doctor-table td {
-  text-align: center;
-  vertical-align: middle;
-}
-
-/* --- Specific Column Logic --- */
-
-/* 1. Sl. No. */
-.doctor-table th:nth-child(1), 
-.doctor-table td:nth-child(1) { 
-    width: 60px;
     text-align: center;
-}
-
-/* 4. Created On (The Space Fix) */
-.doctor-table th:nth-child(4), 
-.doctor-table td:nth-child(4) { 
-    /* Prevents the date from wrapping into multiple lines */
-    white-space: nowrap; 
-    /* Ensures minimum space for full date/time string */
-    min-width: 200px;    
-    color: #4b5563;
+    vertical-align: middle;
 }
 
 .doctor-table tr:hover td {
-    background: #f8fafc;
+    background-color: #f9fafb;
 }
 
+/* Specific Widths */
+.doctor-table th:nth-child(2), 
+.doctor-table td:nth-child(2) { width: 300px; } /* Category Name */
+
+.doctor-table th:nth-child(3), 
+.doctor-table td:nth-child(3) { width: 300px; } /* Category Master */
+
 /* =========================================
-   4. POPUP & FORM STYLES
-   ========================================= */
+    POPUP / MODAL
+========================================= */
 .popup-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(15, 23, 42, 0.5);
+    background: rgba(15, 23, 42, 0.6);
     backdrop-filter: blur(4px);
     display: flex;
     justify-content: center;
@@ -136,29 +134,33 @@
 }
 
 .popup-container {
-    width: 500px;
-    max-width: 95%;
     background: white;
-    padding: 24px;
-    border-radius: 12px;
-    position: relative;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 500px;
+    padding: 25px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
     animation: scaleIn 0.2s ease-out;
+    position: relative;
+}
+
+.popup-container h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #1e3a8a;
+    font-size: 18px;
 }
 
 .close-btn {
     position: absolute;
-    top: 16px;
-    right: 16px;
-    width: 32px;
-    height: 32px;
+    top: 15px;
+    right: 15px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     border: none;
     background: #f3f4f6;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     transition: 0.2s;
 }
 
@@ -170,58 +172,89 @@
 .form-group {
     display: flex;
     flex-direction: column;
-    margin-bottom: 16px;
+    margin-bottom: 18px;
 }
 
 .form-group label {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
+    color: #4b5563;
     margin-bottom: 6px;
-    color: #374151;
 }
 
-.form-group input,
-.form-group select,
-.form-group textarea {
+.form-group input, 
+.form-group select {
     padding: 10px;
-    font-size: 13px;
     border: 1px solid #d1d5db;
     border-radius: 6px;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-.form-group input:focus {
+    font-size: 14px;
     outline: none;
-    border-color: #2563eb;
-    ring: 2px solid rgba(37, 99, 235, 0.1);
 }
 
+.form-group input:focus, 
+.form-group select:focus {
+    border-color: #2563eb;
+}
+
+/* =========================================
+    BUTTONS & ACTIONS
+========================================= */
 .popup-actions {
     display: flex;
     justify-content: flex-end;
     gap: 12px;
-    margin-top: 24px;
+    margin-top: 10px;
 }
 
-.cancel-btn {
-    background: #f3f4f6;
-    border: none;
-    padding: 10px 18px;
+.edit-btn {
+    background: white;
+    color: #2563eb;
+    border: 1px solid #2563eb;
+    padding: 6px 14px;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 13px;
-    color: #4b5563;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+.edit-btn:hover {
+    background: #2563eb;
+    color: white;
 }
 
 .save-btn {
     background: #2563eb;
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 10px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.cancel-btn {
+    background: #f3f4f6;
+    color: #4b5563;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* No Results State */
+.no-results-cell {
+    padding: 60px 0 !important;
+    background-color: #f9fafb;
+}
+
+.clear-search-btn {
+    margin-top: 10px;
+    padding: 8px 20px;
+    background-color: #2563eb;
+    color: white;
+    border: none;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 13px;
 }
 
 @keyframes scaleIn {
@@ -229,128 +262,8 @@
     to { transform: scale(1); opacity: 1; }
 }
 
-/* =========================================
-   5. UPDATE & BADGE STYLES
-   ========================================= */
-
-/* Update Button */
-.edit-btn {
-    background: #f59e0b;
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 6px;
+.error {
+    color: #ef4444;
     font-size: 12px;
-    cursor: pointer;
-    transition: 0.2s ease;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    margin: 0 auto;
-}
-
-.edit-btn:hover {
-    background: #d97706;
-    transform: translateY(-1px);
-}
-
-/* Status Badges */
-.active-badge {
-    background: #dcfce7;
-    color: #16a34a;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 12px;
-    display: inline-block;
-}
-
-.inactive-badge {
-    background: #fee2e2;
-    color: #dc2626;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 12px;
-    display: inline-block;
-}
-
-/* Checkbox specific styles for the update form */
-.checkbox-group {
-    margin-top: 8px;
-}
-
-.checkbox-group label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 13px;
-    font-weight: 500;
-    color: #374151;
-    cursor: pointer;
-}
-
-.checkbox-group input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
-    accent-color: #2563eb;
-    margin: 0;
-}
-
-/* Search Input Styling */
-.search-input {
-    width: 100%;
-    max-width: 400px;
-    padding: 10px 16px;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    font-size: 14px;
-    background: #f9fafb;
-    outline: none;
-    transition: all 0.2s ease;
-}
-
-.search-input:focus {
-    background: #fff;
-    border-color: #2563eb;
-    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
-}
-
-/* No Results Styling */
-.no-results-cell {
-    padding: 50px 0 !important;
-    background-color: #f9fafb;
-    text-align: center;
-}
-
-.no-results-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-}
-
-.icon-circle {
-    font-size: 30px;
-    background: #f3f4f6;
-    width: 60px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-}
-
-.clear-search-btn {
-    margin-top: 10px;
-    padding: 6px 16px;
-    background-color: #2563eb;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 13px;
-}
-
-.clear-search-btn:hover {
-    background-color: #1d4ed8;
+    margin-top: 4px;
 }

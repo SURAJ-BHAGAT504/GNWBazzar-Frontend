@@ -25,7 +25,7 @@
                 <tr>
                     <th>Sl. No.</th>
                     <th>Category Name</th>
-                    <th>Category Master</th>
+                    <th>Main Category</th>
                     <th>Created On</th>
                     <th>Action</th>
                 </tr>
@@ -36,7 +36,7 @@
                     <td>{{ i + 1 }}</td>
                     <td>{{ c.Category }}</td>
                     <td>{{ getCategoryMasterName(c.CategoryMasterId) }}</td>
-                    <td>{{ c.CreatedOn | date:'medium' }}</td>
+                    <td>{{ c.CreatedOn | date:'dd-MM-yyyy' }}</td>
                     <td>
                         <button class="edit-btn" (click)="openUpdatePopup(c)">Update</button>
                     </td>
@@ -84,16 +84,16 @@
             </div>
 
             <div class="form-group">
-                <label>Category Master</label>
+                <label>Main Category</label>
                 <select name="CategoryMasterId" required [(ngModel)]="formModel.CategoryMasterId"
                     #CategoryMasterId="ngModel">
-                    <option value="" disabled>Select Category Master</option>
+                    <option value="" disabled>Select Main Category</option>
                     <option *ngFor="let m of categoryMasters" [value]="m.Id">
                         {{ m.CategoryName }}
                     </option>
                 </select>
                 <small class="error" *ngIf="CategoryMasterId.touched && CategoryMasterId.invalid">
-                    Category master required
+                    Main category required
                 </small>
             </div>
 

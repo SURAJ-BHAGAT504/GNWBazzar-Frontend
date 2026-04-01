@@ -3,7 +3,7 @@
     <button class="toggle-btn" (click)="isSidebarOpen = !isSidebarOpen">☰</button>
 
     <div class="navbar-center">
-      <span class="brand-text" style="color: red;">GNW Bazaar</span>
+      <span class="brand-text" style="color: red;">GNW-Bazaar</span>
     </div>
 
     <div class="user-profile-wrapper">
@@ -36,7 +36,7 @@
         <ul class="sub-menu-compact" *ngIf="isHealthCareOpen">
           <li>
             <a routerLink="doctor" routerLinkActive="active-link" (click)="isSidebarOpen = false">
-              Doctors
+              Healthcare Management
             </a>
           </li>
           <li>
@@ -46,6 +46,10 @@
           </li>
         </ul>
 
+        <div class="nav-header-sm" routerLink="sponsor" routerLinkActive="active-link" (click)="isSidebarOpen = false">
+          <span>🤝 Sponsor</span>
+        </div>
+ 
         <div class="nav-header-sm" routerLink="categorymaster" routerLinkActive="active-link" (click)="isSidebarOpen = false">
           <span>Main Category</span>
         </div>

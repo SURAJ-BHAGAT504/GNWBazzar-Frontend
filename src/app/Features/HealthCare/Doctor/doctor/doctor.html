@@ -26,7 +26,7 @@
             <thead>
                 <tr>
                     <th>Sl. No.</th>
-                    <th>Doctor Image</th>
+                    <th>Healthcare Image</th>
                     <th>Name</th>
                     <th>Category</th>
                     <th class="col-about">Highlights</th>
@@ -61,7 +61,7 @@
                     </td>
                     <td>{{ doctor.Phonenumber }}</td>
                     <td>{{ doctor.WhatsAppNumber }}</td>
-                    <td>{{ doctor.EndDate }}</td>
+                    <td class="col-endDate">{{ doctor.EndDate | date:'dd-MM-yyyy' }}</td>
                     <td>
                         <img [src]="doctor.ClinicImagePath && doctor.ClinicImagePath.trim() !== ''
                 ? getImageUrl(doctor.ClinicImagePath)
@@ -75,7 +75,7 @@
                     <td class="col-location">
                         <div class="wrap-text">{{ doctor.Location }}</div>
                     </td>
-                    <td>{{ doctor.CreatedOn | date:'medium' }}</td>
+                    <td class="col-CreatedOn">{{ doctor.CreatedOn | date:'dd-MM-yyyy' }}</td>
                     <td>
                         <span [ngClass]="doctor.IsActive ? 'active-badge' : 'inactive-badge'">
                             {{ doctor.IsActive ? 'Active' : 'Inactive' }}

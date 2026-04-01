@@ -29,8 +29,13 @@
         }
       </div>
 
-      <button type="submit" [disabled]="loginForm.invalid" class="login-button">
-        Sign In
+      <button type="submit" [disabled]="loginForm.invalid || isSubmitting" class="login-button">
+        <span *ngIf="!isSubmitting">Sign In</span>
+
+        <div class="loader-container" *ngIf="isSubmitting">
+          <span class="spinner"></span>
+          <span style="color: red;">Signing In...</span>
+        </div>
       </button>
 
       <div class="form-footer">

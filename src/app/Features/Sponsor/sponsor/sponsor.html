@@ -1,0 +1,136 @@
+<div class="doctor-wrapper">
+    <div class="doctor-header">
+        <h2>🤝 Sponsors Management</h2>
+        <div class="search-container" style="flex: 1; margin: 0 20px;">
+            <input type="text" [(ngModel)]="searchTerm" placeholder="Search Client, Product, or Email..."
+                style="width: 40%; padding: 10px; border-radius: 8px; border: 1px solid #ccc;">
+        </div>
+        <button class="create-btn" (click)="openCreatePopup()">+ Create Sponsor</button>
+    </div>
+
+    <div class="table-container" *ngIf="!loading && sponsors.length > 0">
+        <table class="doctor-table">
+            <thead>
+                <tr>
+                    <th>Sl. No.</th>
+                    <th>Sponsor Image</th>
+                    <th>Client Name</th>
+                    <th>Product</th>
+                    <th>Type</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let s of filteredSponsors; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>
+                        <img [src]="getImageUrl(s.SponsorFilePath)"
+                            (error)="$event.target.src='https://cdn-icons-png.flaticon.com/512/387/387561.png'"
+                            width="60" height="45" style="cursor:pointer; object-fit: cover; border-radius: 4px;"
+                            (click)="openImageNewTab(s.SponsorFilePath)">
+                    </td>
+                    <td><strong>{{ s.ClientName }}</strong></td>
+                    <td>{{ s.SponsorProduct }}</td>
+                    <td>{{ s.SponsorType }}</td>
+                    <td>{{ s.Email }}</td>
+                    <td>{{ s.PhoneNumber }}</td>
+                    <td>{{ s.StartDate | date:'dd-MM-yyyy' }}</td>
+                    <td>{{ s.EndDate | date:'dd-MM-yyyy' }}</td>
+                    <td>
+                        <span [ngClass]="s.IsActive ? 'active-badge' : 'inactive-badge'">
+                            {{ s.IsActive ? 'Active' : 'Inactive' }}
+                        </span>
+                    </td>
+                    <td><button class="edit-btn" (click)="openUpdatePopup(s)">Update</button></td>
+                </tr>
+                <tr *ngIf="filteredSponsors.length === 0">
+                <td colspan="11" class="no-results-cell">
+                    <div class="no-results-content">
+                        <h3>No Sponsors Found</h3>
+                        <p>We couldn't find any matches for "<strong>{{searchTerm}}</strong>"</p>
+                        <button type="button" class="btn btn-primary" (click)="searchTerm = ''">
+                            Clear Search
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="popup-overlay" *ngIf="showCreatePopup">
+    <div class="popup-container wide-popup">
+        <div class="popup-header">
+            <h3>{{ isEditMode ? 'Update' : 'Create' }} Sponsor</h3>
+            <button class="close-btn" (click)="closePopup()">✖</button>
+        </div>
+
+        <form #sponsorFormRef="ngForm" class="popup-body" (ngSubmit)="saveSponsor(sponsorFormRef)">
+            <div class="form-grid">
+                <div class="form-column">
+                    <div class="form-group">
+                        <label>Client Name</label>
+                        <input type="text" name="ClientName" required [(ngModel)]="sponsorForm.ClientName">
+                    </div>
+                    <div class="form-group">
+                        <label>Sponsor Product</label>
+                        <input type="text" name="SponsorProduct" required [(ngModel)]="sponsorForm.SponsorProduct">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" name="Email" required [(ngModel)]="sponsorForm.Email">
+                    </div>
+                    <div class="form-group">
+                        <label>Start Date</label>
+                        <input type="date" name="StartDate" required [(ngModel)]="sponsorForm.StartDate">
+                    </div>
+                </div>
+
+                <div class="form-column">
+                    <div class="form-group">
+                        <label>Sponsor Type</label>
+                        <select name="SponsorType" required [(ngModel)]="sponsorForm.SponsorType"
+                            #SponsorType="ngModel">
+                            <option value="" disabled selected>Select Type</option>
+                            <option value="TOP BANNER">TOP BANNER</option>
+                            <option value="LOWER BANNER">LOWER BANNER</option>
+                            <option value="PRIME SPOTLIGHT">PRIME SPOTLIGHT</option>
+                        </select>
+                        <small class="error" *ngIf="SponsorType.touched && SponsorType.invalid">
+                            Please select a type
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="text" name="PhoneNumber" required maxlength="10"
+                            [(ngModel)]="sponsorForm.PhoneNumber">
+                    </div>
+                    <div class="form-group">
+                        <label>Upload Logo (Sponsor File)</label>
+                        <input type="file" (change)="onFileChange($event)">
+                    </div>
+                    <div class="form-group">
+                        <label>End Date</label>
+                        <input type="date" name="EndDate" required [(ngModel)]="sponsorForm.EndDate">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group full-width">
+                <label>Description</label>
+                <textarea name="Description" required [(ngModel)]="sponsorForm.Description"></textarea>
+            </div>
+
+            <div class="popup-actions">
+                <button type="button" class="cancel-btn" (click)="closePopup()">Cancel</button>
+                <button type="submit" class="save-btn" [disabled]="sponsorFormRef.invalid">Save Sponsor</button>
+            </div>
+        </form>
+    </div>
+</div>

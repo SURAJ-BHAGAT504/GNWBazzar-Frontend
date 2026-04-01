@@ -8,7 +8,7 @@ import { SearchPipe } from '../../../../Shared/Pipes/search-pipe';
 @Component({
   selector: 'app-doctor',
   standalone: true,
-  imports: [CommonModule, FormsModule, SearchPipe],
+  imports: [CommonModule, FormsModule],
   templateUrl: './doctor.html',
   styleUrl: './doctor.css',
 })

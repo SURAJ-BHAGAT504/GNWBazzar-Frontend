@@ -23,7 +23,7 @@ export class Dashboard implements OnInit {
   userName = '';
   userEmail = '';
 
-  constructor(private eRef: ElementRef) {}
+  constructor(private eRef: ElementRef) { }
 
   ngOnInit() {
 
@@ -65,6 +65,19 @@ export class Dashboard implements OnInit {
   }
 
   onLogout() {
+    localStorage.clear();
+    sessionStorage.clear();
+
+    if ('caches' in window) {
+      caches.keys().then((names) => {
+        for (let name of names) {
+          caches.delete(name);
+        }
+      });
+    }
+
     this.authService.logout();
+
+    window.location.href = '/login';
   }
 }

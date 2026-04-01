@@ -1,7 +1,7 @@
 <div class="category-wrapper">
 
   <div class="category-header">
-    <h2>🗂 Category Master</h2>
+    <h2>🗂 Main Category</h2>
 
     <div class="search-container" style="flex: 1; margin: 0 20px;">
       <input type="text" [(ngModel)]="searchTerm" placeholder="Search categories by name or description..."
@@ -25,7 +25,7 @@
         <tr>
           <th>Sl. No.</th>
           <th>Category Name</th>
-          <th>Description</th>
+          <th style="text-align: center;">Description</th>
           <th>Created On</th>
           <th>Status</th>
           <th>Action</th>
@@ -37,7 +37,7 @@
           <td>{{i + 1}}</td>
           <td>{{c.CategoryName}}</td>
           <td>{{c.Description}}</td>
-          <td>{{c.CreatedOn | date:'medium'}}</td>
+          <td>{{c.CreatedOn | date:'dd-MM-yyyy'}}</td>
           <td>
             <span [ngClass]="c.IsActive ? 'active-badge' : 'inactive-badge'">
               {{ c.IsActive ? 'Active' : 'Inactive' }}
@@ -53,7 +53,7 @@
             <div class="no-results-content">
               <h3>No Categories Found</h3>
               <p>We couldn't find any matches for "<strong>{{searchTerm}}</strong>"</p>
-              <button type="button" class="clear-search-btn" (click)="searchTerm = ''">
+              <button type="button" class="btn btn-primary" (click)="searchTerm = ''">
                 Clear Search
               </button>
             </div>
