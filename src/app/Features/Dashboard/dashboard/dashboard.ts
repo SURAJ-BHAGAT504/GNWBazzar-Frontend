@@ -78,6 +78,6 @@ export class Dashboard implements OnInit {
 
     this.authService.logout();
 
-    window.location.href = '/login';
+    window.location.href = '/adminpanel';
   }
 }
