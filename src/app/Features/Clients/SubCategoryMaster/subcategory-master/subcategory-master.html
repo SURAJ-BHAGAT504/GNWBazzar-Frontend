@@ -1,0 +1,93 @@
+<div class="category-wrapper">
+    <div class="category-header">
+        <h2>📂 Main Sub Category</h2>
+        <div class="search-container">
+            <input type="text" [(ngModel)]="searchTerm" placeholder="Search sub-categories..." class="search-input">
+        </div>
+        <button class="create-btn" (click)="openCreatePopup()">+ Create Sub-Category</button>
+    </div>
+
+    <div *ngIf="loading" class="loading-text">Loading data...</div>
+
+    <div class="table-container" *ngIf="!loading && subCategories.length > 0">
+        <table class="doctor-table">
+            <thead>
+                <tr>
+                    <th>Sl. No.</th>
+                    <th>Sub-Category Name</th>
+                    <th>Main Category</th>
+                    <th>Created On</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let s of filteredSubCategories; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ s.CategoryName }}</td>
+                    <td>{{ getParentCategoryName(s.CategoryMasterId) }}</td>
+                    <td>{{ s.CreatedOn | date:'dd-MM-yyyy' }}</td>
+                    <td>
+                        <button class="edit-btn" (click)="openUpdatePopup(s)">Update</button>
+                    </td>
+                </tr>
+                <tr *ngIf="filteredSubCategories.length === 0">
+                    <td colspan="6" class="no-results-cell">
+                        <div class="no-results-content">
+                            <h3>No Sub-Categories Found</h3>
+                            <p>We couldn't find any matches for "<strong>{{searchTerm}}</strong>"</p>
+                            <button type="button" class="btn btn-primary" (click)="searchTerm = ''">
+                                Clear Search
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="popup-overlay" *ngIf="showCreatePopup">
+    <div class="popup-container">
+        <div class="popup-header">
+            <h3>{{ isEditMode ? 'Update' : 'Create' }} Sub-Category</h3>
+            <button class="close-btn" (click)="closePopup()">✖</button>
+        </div>
+
+        <form #formRef="ngForm" (ngSubmit)="saveSubCategory(formRef)" class="popup-body">
+            <div class="form-group">
+                <label>Main Category</label>
+                <select name="CategoryMasterId" required [(ngModel)]="subCategoryForm.CategoryMasterId"
+                    #catId="ngModel">
+                    <option value="" disabled>Select Main Category</option>
+                    <option *ngFor="let m of categoryMasters" [value]="m.Id">{{ m.CategoryName }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Sub-Category Name</label>
+                <input type="text" required name="SubName" [(ngModel)]="subCategoryForm.CategoryName"
+                    #subName="ngModel">
+            </div>
+
+            <div class="popup-actions">
+                <button type="button" class="cancel-btn" (click)="closePopup()">Cancel</button>
+                <button type="submit" class="save-btn" [disabled]="formRef.invalid">
+                    {{ isEditMode ? 'Update Sub-Category' : 'Save Sub-Category' }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modern-error-overlay" *ngIf="showErrorPopup">
+    <div class="modern-error-card">
+        <div class="error-icon">⚠</div>
+        <div class="error-content">
+            <h4>Error</h4>
+            <p>{{backendErrorMessage}}</p>
+        </div>
+        <div class="error-actions">
+            <button (click)="showErrorPopup=false">OK</button>
+        </div>
+    </div>
+</div>

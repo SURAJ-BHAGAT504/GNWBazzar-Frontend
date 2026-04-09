@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Healthcare } from '../../../../Core/Services/healthcare';
+import { Healthcare } from '../../../../Core/Services/HealthCare/healthcare';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 

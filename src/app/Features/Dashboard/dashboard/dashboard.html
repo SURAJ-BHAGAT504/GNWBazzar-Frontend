@@ -3,7 +3,7 @@
     <button class="toggle-btn" (click)="isSidebarOpen = !isSidebarOpen">☰</button>
 
     <div class="navbar-center">
-      <span class="brand-text" style="color: red;">XYZ</span>
+      <span class="brand-text" style="color: red;">GNW-Bazaar</span>
     </div>
 
     <div class="user-profile-wrapper">
@@ -46,12 +46,20 @@
           </li>
         </ul>
 
+        <div class="nav-header-sm" routerLink="clients" routerLinkActive="active-link" (click)="isSidebarOpen = false">
+          <span>🤝 Clients</span>
+        </div>
+
         <div class="nav-header-sm" routerLink="sponsor" routerLinkActive="active-link" (click)="isSidebarOpen = false">
           <span>🤝 Sponsor</span>
         </div>
  
         <div class="nav-header-sm" routerLink="categorymaster" routerLinkActive="active-link" (click)="isSidebarOpen = false">
-          <span>Main Category</span>
+          <span>📂 Main Category</span>
+        </div>
+
+        <div class="nav-header-sm" routerLink="subcategorymaster" routerLinkActive="active-link" (click)="isSidebarOpen = false">
+          <span>📂 Main Sub Category</span>
         </div>
       </li>
     </ul>

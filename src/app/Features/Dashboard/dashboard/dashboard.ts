@@ -1,5 +1,5 @@
 import { Component, ElementRef, HostListener, inject, OnInit } from '@angular/core';
-import { Auth } from '../../../Core/Services/auth';
+import { Auth } from '../../../Core/Services/Auth/auth';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';

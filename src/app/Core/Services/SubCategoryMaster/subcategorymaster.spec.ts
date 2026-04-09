@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SponsorService } from './sponsor-service';
+import { Subcategorymaster } from './subcategorymaster';
 
-describe('SponsorService', () => {
-  let service: SponsorService;
+describe('Subcategorymaster', () => {
+  let service: Subcategorymaster;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(SponsorService);
+    service = TestBed.inject(Subcategorymaster);
   });
 
   it('should be created', () => {

@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Healthcare } from '../../../../Core/Services/healthcare';
+import { Healthcare } from '../../../../Core/Services/HealthCare/healthcare';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -76,19 +76,19 @@ export class Healthcarecategory {
   }
 
   get filteredCategories() {
-  if (!this.searchTerm || !this.searchTerm.trim()) {
-    return this.categories;
+    if (!this.searchTerm || !this.searchTerm.trim()) {
+      return this.categories;
+    }
+
+    const term = this.searchTerm.toLowerCase();
+
+    return this.categories.filter(c => {
+      const categoryName = (c.Category || '').toLowerCase();
+      const masterName = this.getCategoryMasterName(c.CategoryMasterId).toLowerCase();
+
+      return categoryName.includes(term) || masterName.includes(term);
+    });
   }
-
-  const term = this.searchTerm.toLowerCase();
-
-  return this.categories.filter(c => {
-    const categoryName = (c.Category || '').toLowerCase();
-    const masterName = this.getCategoryMasterName(c.CategoryMasterId).toLowerCase();
-    
-    return categoryName.includes(term) || masterName.includes(term);
-  });
-}
 
   openPopup() {
     this.showPopup = true;
@@ -96,7 +96,7 @@ export class Healthcarecategory {
 
   openUpdatePopup(category: any) {
     this.isEditMode = true;
-    this.editingCategoryId = category.Id || category.HealthCareCategoryId; 
+    this.editingCategoryId = category.Id || category.HealthCareCategoryId;
 
     this.formModel = {
       Category: category.Category,
@@ -111,7 +111,7 @@ export class Healthcarecategory {
     this.showPopup = false;
     this.isEditMode = false;
     this.editingCategoryId = null;
-    
+
     this.formModel = {
       Category: '',
       CategoryMasterId: 0,
@@ -123,7 +123,7 @@ export class Healthcarecategory {
     if (form.invalid) return;
 
     const payload = {
-      Id: this.isEditMode ? this.editingCategoryId : 0, 
+      Id: this.isEditMode ? this.editingCategoryId : 0,
       Category: this.formModel.Category,
       CategoryMasterId: Number(this.formModel.CategoryMasterId),
       CreatedOn: this.isEditMode ? this.formModel.CreatedOn : new Date().toISOString()

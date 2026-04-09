@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { SponsorService } from '../../../Core/Services/sponsor-service';
+import { SponsorService } from '../../../Core/Services/Sponsor/sponsor-service';
 import { CommonModule, formatDate } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 

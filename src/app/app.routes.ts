@@ -6,12 +6,14 @@ import { Doctor } from './Features/HealthCare/Doctor/doctor/doctor';
 import { Categorymaster } from './Features/HealthCare/CategoryMaster/categorymaster/categorymaster';
 import { Healthcarecategory } from './Features/HealthCare/HealthCareCategory/healthcarecategory/healthcarecategory';
 import { Sponsor } from './Features/Sponsor/sponsor/sponsor';
+import { SubcategoryMaster } from './Features/Clients/SubCategoryMaster/subcategory-master/subcategory-master';
+import { Clients } from './Features/Clients/AllClients/clients/clients';
 
 export const routes: Routes = [
   {
     path: '',
     redirectTo: 'login',
-    pathMatch: 'full'
+    // pathMatch: 'full'
   },
   {
     path: 'login',
@@ -24,7 +26,9 @@ export const routes: Routes = [
       {path: 'doctor', component: Doctor},
       {path: 'categorymaster', component: Categorymaster},
       {path: 'healthcarecategory', component: Healthcarecategory},
-      {path: 'sponsor', component: Sponsor}
+      {path: 'sponsor', component: Sponsor},
+      {path: 'subcategorymaster', component: SubcategoryMaster},
+      {path: 'clients', component: Clients}
     ],
     canActivate: [authGuardGuard]
   }
