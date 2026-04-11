@@ -252,6 +252,7 @@ get filteredDoctors() {
     formData.append('IsActive', this.doctorForm.IsActive.toString());
     
     formData.append('DoctorName', this.doctorForm.DoctorName);
+    
     this.doctorForm.HealthCareCategoryIds.forEach((id: any) => {
       formData.append('HealthCareCategoryIds', id);
     });

@@ -1,0 +1,263 @@
+/* =========================================
+    MAIN WRAPPER (Sidebar Responsive)
+========================================= */
+.doctor-wrapper {
+    padding: 20px;
+    background-color: #f9fafb;
+    min-height: 100vh;
+    font-family: 'Inter', system-ui, sans-serif;
+    display: flex;
+    flex-direction: column;
+    /* This ensures the content shrinks/grows with the sidebar */
+    width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden; 
+}
+
+.doctor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.search-container {
+    flex: 1;
+    margin: 0 20px;
+}
+
+.search-input {
+    width: 40%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    outline: none;
+}
+
+.search-input:focus {
+    border-color: #2563eb;
+}
+
+/* =========================================
+    TABLE STYLING (Sponsor Style Match)
+========================================= */
+.table-container {
+    background: white;
+    border-radius: 12px;
+    overflow-x: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+.doctor-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 1200px; /* Minimum width to maintain column integrity */
+}
+
+.doctor-table th {
+    background: #f3f4f6;
+    padding: 12px;
+    text-align: left;
+    font-size: 13px;
+    color: #4b5563;
+    border-bottom: 2px solid #e5e7eb;
+    white-space: nowrap;
+}
+
+.doctor-table td {
+    padding: 12px;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 13px;
+    vertical-align: middle;
+}
+
+.table-img {
+    width: 60px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid #eee;
+}
+
+.active-badge {
+    background: #d1fae5;
+    color: #065f46;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.inactive-badge {
+    background: #fee2e2;
+    color: #991b1b;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* =========================================
+    POPUP & FORM GRID (Sponsor Match)
+========================================= */
+.popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup-container {
+    background: white;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 850px; /* Same as wide-popup in sponsors */
+    max-height: 90vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.popup-header {
+    padding: 20px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.popup-body {
+    padding: 25px;
+    overflow-y: auto;
+}
+
+/* The Grid system from Sponsors */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.full-width {
+    grid-column: span 2;
+}
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #4b5563;
+    margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group textarea,
+.custom-multiselect {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+/* Multiselect Styling */
+.dropdown-wrapper {
+    position: relative;
+}
+
+.custom-multiselect {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    cursor: pointer;
+}
+
+.multiselect-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: white;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    z-index: 100;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.list-item {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.list-item:hover {
+    background: #f3f4f6;
+}
+
+/* Buttons */
+.create-btn, .save-btn {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.edit-btn {
+    background: white;
+    color: #2563eb;
+    border: 1px solid #2563eb;
+    padding: 5px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.cancel-btn {
+    background: #f3f4f6;
+    color: #4b5563;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.image-clear-btn {
+    margin-top: 8px;
+    width: 100%;
+    background: #fee2e2;
+    color: #b91c1c;
+    border: none;
+    padding: 8px 0;
+    border-radius: 25px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+/* Utilities */
+.wrap-text {
+    white-space: normal;
+    word-break: break-word;
+    max-width: 200px; /* Keeps highlights and address from stretching too far */
+}
