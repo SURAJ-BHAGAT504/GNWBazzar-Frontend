@@ -261,3 +261,53 @@
     word-break: break-word;
     max-width: 200px; /* Keeps highlights and address from stretching too far */
 }
+
+.no-results-cell {
+    padding: 80px 0 !important;
+    text-align: center;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.no-results-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.no-results-content h3 {
+    margin: 0;
+    color: #111827;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.no-results-content p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.no-results-content strong {
+    color: #2563eb; /* Highlights the search term in blue */
+}
+
+/* Matching the Sponsor/Category Primary Button style */
+.btn-primary {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    margin-top: 10px;
+    transition: background 0.2s ease;
+}
+
+.btn-primary:hover {
+    background: #1d4ed8;
+}
