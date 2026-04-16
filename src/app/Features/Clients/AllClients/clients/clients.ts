@@ -179,16 +179,27 @@ export class Clients {
   // Helper methods for multi-select
   toggleDropdown() { this.showDropdown = !this.showDropdown; }
 
-  isSubSelected(id: number) { return this.clientForm.SubCategoryIds.includes(id); }
+  isSubSelected(id: number) {
+    return this.clientForm.SubCategoryMasterIds &&
+      this.clientForm.SubCategoryMasterIds.includes(id);
+  }
 
   toggleSubCategory(id: number) {
     const index = this.clientForm.SubCategoryMasterIds.indexOf(id);
-    if (index > -1) this.clientForm.SubCategoryMasterIds.splice(index, 1);
-    else this.clientForm.SubCategoryMasterIds.push(id);
+    if (index > -1) {
+      this.clientForm.SubCategoryMasterIds.splice(index, 1);
+    } else {
+      this.clientForm.SubCategoryMasterIds.push(id);
+    }
   }
 
   getSelectedSubNames() {
-    return this.subCategories.filter(s => this.isSubSelected(s.Id)).map(s => s.CategoryName).join(', ');
+    if (!this.subCategories || !this.clientForm.SubCategoryMasterIds) return '';
+
+    return this.subCategories
+      .filter(s => this.isSubSelected(s.Id))
+      .map(s => s.CategoryName) 
+      .join(', ');
   }
 
   getImageUrl(path: string): string {
