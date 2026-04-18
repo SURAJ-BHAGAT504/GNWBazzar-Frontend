@@ -8,10 +8,6 @@
         <button class="create-btn" (click)="openCreatePopup()">+ Create Client</button>
     </div>
 
-    <div *ngIf="loading" class="loading-text" style="text-align: center; padding: 20px;">
-        Loading clients...
-    </div>
-
     <div class="table-container" *ngIf="!loading">
         <table class="client-table">
             <thead>
@@ -34,9 +30,9 @@
                 <tr *ngFor="let c of filteredClients; let i = index">
                     <td>{{ i + 1 }}</td>
                     <td>
-                        <img [src]="getImageUrl(c.ClientImage)" class="table-img"
+                        <img [src]="getImageUrl(c.ClientImagePath)" class="table-img"
                             (error)="$event.target.src='https://cdn-icons-png.flaticon.com/512/387/387561.png'"
-                            (click)="openImageNewTab(c.ClientImage)">
+                            (click)="openImageNewTab(c.ClientImagePath)">
                     </td>
                     <td><strong>{{ c.ClientName }}</strong></td>
                     <td>{{ getSubCategoryNames(c) }}</td>
@@ -60,22 +56,14 @@
                     </td>
                 </tr>
 
-                <tr *ngIf="filteredClients.length === 0">
-                    <td colspan="12" class="no-results-cell">
+                <tr *ngIf="filteredClients.length === 0 && !loading">
+                    <td colspan="14" class="no-results-cell">
                         <div class="no-results-content">
                             <h3>No Clients Found</h3>
-                            <p>No matches for "<strong>{{searchTerm}}</strong>"</p>
-                            <button class="btn-primary" (click)="searchTerm = ''">Clear Search</button>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-            <tbody *ngIf="clients.length === 0">
-                <tr>
-                    <td colspan="12" class="no-results-cell">
-                        <div class="no-results-content">
-                            <h3>List is Empty</h3>
-                            <p>Click "+ Create Client" to get started.</p>
+                            <p>We couldn't find any matches for "<strong>{{searchTerm}}</strong>"</p>
+                            <button type="button" class="btn btn-primary" (click)="searchTerm = ''">
+                                Clear Search
+                            </button>
                         </div>
                     </td>
                 </tr>
@@ -91,26 +79,36 @@
             <button class="close-btn" (click)="closePopup()">✖</button>
         </div>
 
-        <form #clientFormRef="ngForm" (ngSubmit)="saveClient(clientFormRef)">
+        <form #clientFormRef="ngForm" (ngSubmit)="saveClient(clientFormRef)" class="popup-form-wrapper">
             <div class="popup-body">
                 <div class="form-grid">
+
                     <div class="form-group">
                         <label>Client Name</label>
                         <input type="text" name="ClientName" required [(ngModel)]="clientForm.ClientName">
                     </div>
 
+                    <div class="form-group">
+                        <label>Filter by Category</label>
+                        <select class="form-select" [(ngModel)]="selectedCategoryId" name="categoryFilter"
+                            (ngModelChange)="onCategoryChange()">
+                            <option [ngValue]="null">-- All Categories --</option>
+                            <option *ngFor="let cat of categories" [ngValue]="cat.Id">{{ cat.CategoryName }}</option>
+                        </select>
+                    </div>
+
                     <div class="form-group dropdown-wrapper">
                         <label>Sub-Categories</label>
                         <div class="custom-multiselect" (click)="toggleDropdown()">
-                            <span class="selected-text">{{ getSelectedSubNames() || 'Select Categories' }}</span>
+                            <span class="selected-text">{{ getSelectedSubNames() || 'Select Sub-Categories' }}</span>
                             <span class="arrow-icon">{{ showDropdown ? '▲' : '▼' }}</span>
                         </div>
                         <div class="multiselect-list" *ngIf="showDropdown">
-                            <div class="list-item" *ngFor="let s of subCategories"
+                            <div class="list-item" *ngFor="let s of filteredSubCategoriesList; trackBy: trackById"
                                 (click)="toggleSubCategory(s.Id); $event.stopPropagation()">
-                                <input type="checkbox" [checked]="isSubSelected(s.Id)"
-                                    (click)="$event.stopPropagation()">
                                 <span>{{ s.CategoryName }}</span>
+                                <input type="checkbox" [checked]="isSubSelected(s.Id)"
+                                    (click)="toggleSubCategory(s.Id); $event.stopPropagation()">
                             </div>
                         </div>
                     </div>
@@ -128,25 +126,30 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Location</label>
-                        <input type="text" name="Location" required [(ngModel)]="clientForm.Location">
-                    </div>
-
-                    <div class="form-group">
                         <label>End Date</label>
                         <input type="date" name="EndDate" required [(ngModel)]="clientForm.EndDate">
                     </div>
 
+                    <div class="form-group span-two">
+                        <label>Location</label>
+                        <input type="text" name="Location" required [(ngModel)]="clientForm.Location">
+                    </div>
+
+                    <div class="form-group checkbox-align" *ngIf="isEditMode">
+                        <label class="active-checkbox">
+                            <input type="checkbox" name="IsActive" [(ngModel)]="clientForm.IsActive">
+                            Is Active
+                        </label>
+                    </div>
+
                     <div class="form-group full-width">
                         <label>Highlights</label>
-                        <textarea name="Highlights" required [(ngModel)]="clientForm.Highlights"
-                            placeholder="Brief highlights..."></textarea>
+                        <textarea name="Highlights" required [(ngModel)]="clientForm.Highlights"></textarea>
                     </div>
 
                     <div class="form-group full-width">
                         <label>Address</label>
-                        <input type="text" name="Address" required [(ngModel)]="clientForm.Address"
-                            placeholder="Full address...">
+                        <input type="text" name="Address" required [(ngModel)]="clientForm.Address">
                     </div>
 
                     <div class="form-group full-width">
@@ -155,17 +158,11 @@
                             <input type="file" (change)="onFileChange($event)" #imgInput>
                             <button type="button" class="image-clear-btn" *ngIf="clientImageFile"
                                 (click)="clearImage(imgInput)">
-                                Clear Image
+                                Clear Selection
                             </button>
                         </div>
                     </div>
 
-                    <div class="form-group checkbox-group" *ngIf="isEditMode">
-                        <label class="active-checkbox">
-                            <input type="checkbox" name="IsActive" [(ngModel)]="clientForm.IsActive">
-                            Is Active
-                        </label>
-                    </div>
                 </div>
             </div>
 

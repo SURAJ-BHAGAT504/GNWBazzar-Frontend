@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { SponsorService } from '../../../Core/Services/Sponsor/sponsor-service';
 import { CommonModule, formatDate } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
+import { Healthcare } from '../../../Core/Services/HealthCare/healthcare';
 
 @Component({
   selector: 'app-sponsor',
@@ -12,10 +13,12 @@ import { FormsModule, NgForm } from '@angular/forms';
 })
 export class Sponsor implements OnInit {
   sponsorService = inject(SponsorService);
+  healthCareService = inject(Healthcare);
 
   baseUrl = 'https://gnwbazaar-002-site2.qtempurl.com/';
   searchTerm: string = '';
   sponsors: any[] = [];
+  categories: any[] = [];
   loading = false;
 
   showCreatePopup = false;
@@ -35,13 +38,33 @@ export class Sponsor implements OnInit {
     StartDate: '',
     EndDate: '',
     IsActive: true,
-    CreatedBy: 'System'
+    CreatedBy: 'System',
+    CategoryMasterId: null
   };
 
   sponsorFileToUpload: File | null = null;
 
   ngOnInit() {
     this.fetchSponsors();
+    this.fetchCategoryMaster();
+  }
+
+  fetchCategoryMaster() {
+    this.healthCareService.getCategoryMasters().subscribe({
+      next: (res: any) => {
+        if (res?.ResponseCode === 200) {
+          this.categories = res?.Value || [];
+        }
+      }
+    });
+  }
+
+  getCategoryName(categoryId: number | null): string {
+    if (!categoryId || !this.categories.length) {
+      return 'Not Assigned';
+    }
+    const category = this.categories.find(c => c.Id === categoryId);
+    return category ? category.CategoryName : 'Not Assigned';
   }
 
   fetchSponsors() {
@@ -97,7 +120,8 @@ export class Sponsor implements OnInit {
       StartDate: sponsor.StartDate ? formatDate(sponsor.StartDate, 'yyyy-MM-dd', 'en') : '',
       EndDate: sponsor.EndDate ? formatDate(sponsor.EndDate, 'yyyy-MM-dd', 'en') : '',
       IsActive: sponsor.IsActive,
-      CreatedBy: sponsor.CreatedBy || 'Admin'
+      CreatedBy: sponsor.CreatedBy || 'Admin',
+      CategoryMasterId: sponsor.CategoryMasterId !== undefined ? sponsor.CategoryMasterId : null
     };
     this.showCreatePopup = true;
   }
@@ -126,6 +150,12 @@ export class Sponsor implements OnInit {
     formData.append('EndDate', this.sponsorForm.EndDate);
     formData.append('IsActive', this.sponsorForm.IsActive.toString());
     formData.append('CreatedBy', this.sponsorForm.CreatedBy);
+
+    if (this.sponsorForm.CategoryMasterId !== null && this.sponsorForm.CategoryMasterId !== undefined) {
+      formData.append('CategoryMasterId', this.sponsorForm.CategoryMasterId.toString());
+    } else {
+      formData.append('CategoryMasterId', '');
+    }
 
     if (this.sponsorFileToUpload) {
       formData.append('SponsorFile', this.sponsorFileToUpload);
@@ -172,7 +202,8 @@ export class Sponsor implements OnInit {
     this.sponsorForm = {
       ClientName: '', Description: '', PhoneNumber: '', Email: '',
       SponsorType: '', SponsorProduct: '', StartDate: '', EndDate: '',
-      IsActive: true, CreatedBy: 'Admin'
+      IsActive: true, CreatedBy: 'Admin',
+      CategoryMasterId: null
     };
     this.sponsorFileToUpload = null;
   }

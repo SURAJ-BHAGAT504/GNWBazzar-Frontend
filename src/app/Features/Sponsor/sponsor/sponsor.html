@@ -16,7 +16,8 @@
                     <th>Sponsor Image</th>
                     <th>Client Name</th>
                     <th>Product</th>
-                    <th>Type</th>
+                    <th>SponsorType</th>
+                    <th>Sponsor At</th>
                     <th>Phone</th>
                     <th>Start Date</th>
                     <th>End Date</th>
@@ -36,6 +37,7 @@
                     <td><strong>{{ s.ClientName }}</strong></td>
                     <td>{{ s.SponsorProduct }}</td>
                     <td>{{ s.SponsorType }}</td>
+                    <td>{{ getCategoryName(s.CategoryMasterId) }}</td>
                     <td>{{ s.PhoneNumber }}</td>
                     <td>{{ s.StartDate | date:'dd-MM-yyyy' }}</td>
                     <td>{{ s.EndDate | date:'dd-MM-yyyy' }}</td>
@@ -75,6 +77,15 @@
                     <div class="form-group">
                         <label>Client Name</label>
                         <input type="text" name="ClientName" required [(ngModel)]="sponsorForm.ClientName">
+                    </div>
+                    <div class="form-group">
+                        <label>Category Master</label>
+                        <select name="CategoryMasterId" [(ngModel)]="sponsorForm.CategoryMasterId">
+                            <option [ngValue]="null">Select Category (Optional)</option>
+                            <option *ngFor="let cat of categories" [value]="cat.Id">
+                                {{ cat.CategoryName }}
+                            </option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label>Sponsor Product</label>

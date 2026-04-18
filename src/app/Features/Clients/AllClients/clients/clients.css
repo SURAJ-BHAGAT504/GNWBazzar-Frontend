@@ -121,7 +121,7 @@
     background: white;
     border-radius: 12px;
     width: 100%;
-    max-width: 800px;
+   max-width: 1200px;
     max-height: 85vh;
     /* Form will not grow past 85% of screen */
     display: flex;
@@ -158,7 +158,7 @@
 }
 
 .popup-body {
-    padding: 20px 25px;
+    padding: 25px;
     overflow-y: auto;
     /* This allows internal scrolling */
     flex: 1;
@@ -166,7 +166,7 @@
 
 .form-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
     gap: 12px 25px;
 }
 
@@ -179,7 +179,7 @@
     background: #f9fafb;
 }
 
-/* =========================================
+/* =========================================.form
     FORM CONTROLS
 ========================================= */
 .form-group label {
@@ -202,7 +202,11 @@
 }
 
 .full-width {
-    grid-column: span 2;
+    grid-column: span 3;
+}
+
+.span-two {
+    grid-column: span 2; /* Spans across 2 columns */
 }
 
 .form-group textarea {

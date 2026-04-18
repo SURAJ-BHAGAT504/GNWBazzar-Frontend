@@ -3,6 +3,7 @@ import { Client } from '../../../../Core/Services/Clients/client';
 import { Subcategorymaster } from '../../../../Core/Services/SubCategoryMaster/subcategorymaster';
 import { CommonModule, formatDate } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
+import { Healthcare } from '../../../../Core/Services/HealthCare/healthcare';
 
 @Component({
   selector: 'app-clients',
@@ -13,10 +14,13 @@ import { FormsModule, NgForm } from '@angular/forms';
 export class Clients {
   clientService = inject(Client);
   subCategoryService = inject(Subcategorymaster);
+  healthCareService = inject(Healthcare);
 
   baseUrl = 'https://gnwbazaar-002-site2.qtempurl.com';
   searchTerm: string = '';
+  selectedCategoryId: number | null = null;
   clients: any[] = [];
+  categories: any[] = [];
   subCategories: any[] = [];
   loading: boolean = false;
 
@@ -45,6 +49,29 @@ export class Clients {
   ngOnInit() {
     this.fetchClients();
     this.fetchSubCategories();
+    this.fetchCategories();
+  }
+
+  fetchCategories() {
+    this.healthCareService.getCategoryMasters().subscribe({
+      next: (res) => {
+        if (res?.ResponseCode === 200) {
+          this.categories = res?.Value || [];
+        }
+      }
+    });
+  }
+
+  get filteredSubCategoriesList() {
+    if (!this.selectedCategoryId) return this.subCategories;
+
+    return this.subCategories.filter(s => {
+      return s.CategoryMasterId == this.selectedCategoryId;
+    });
+  }
+
+  trackById(index: number, item: any) {
+    return item.Id;
   }
 
   fetchClients() {
@@ -101,6 +128,19 @@ export class Clients {
     this.editingClientId = null;
     this.resetForm();
     this.showCreatePopup = true;
+  }
+
+  onCategoryChange() {
+    if (!this.selectedCategoryId) return;
+
+    const validIds = this.subCategories
+      .filter(s => +s.CategoryMasterId === +this.selectedCategoryId!)
+      .map(s => +s.Id);
+
+    this.clientForm.SubCategoryMasterIds =
+      this.clientForm.SubCategoryMasterIds.filter(
+        (id: any) => validIds.includes(+id)
+      );
   }
 
   openUpdatePopup(client: any) {
@@ -185,11 +225,13 @@ export class Clients {
   }
 
   toggleSubCategory(id: number) {
-    const index = this.clientForm.SubCategoryMasterIds.indexOf(id);
+    const ids = this.clientForm.SubCategoryMasterIds;
+    const index = ids.findIndex((x: any) => +x === +id);
+
     if (index > -1) {
-      this.clientForm.SubCategoryMasterIds.splice(index, 1);
+      ids.splice(index, 1);
     } else {
-      this.clientForm.SubCategoryMasterIds.push(id);
+      ids.push(id);
     }
   }
 
@@ -198,21 +240,29 @@ export class Clients {
 
     return this.subCategories
       .filter(s => this.isSubSelected(s.Id))
-      .map(s => s.CategoryName) 
+      .map(s => s.CategoryName)
       .join(', ');
   }
 
-  getImageUrl(path: string): string {
-    if (!path) return 'https://cdn-icons-png.flaticon.com/512/387/387561.png';
-    const cleanPath = path.replace(/\\/g, '/').split('ClientImage/').pop();
-    return `${this.baseUrl}ClientImage/${cleanPath}`;
+  getImageUrl(Path: string | null | undefined): string {
+    if (!Path) return 'https://cdn-icons-png.flaticon.com/512/387/387561.png';
+    let normalized = Path.replace(/\\/g, '/');
+    let folderIndex = normalized.indexOf('ClientImage');
+    if (folderIndex === -1) return Path;
+    const cleanPath = normalized.substring(folderIndex);
+    const base = this.baseUrl.endsWith('/') ? this.baseUrl : `${this.baseUrl}/`;
+    return `${base}${cleanPath}`;
   }
 
   openImageNewTab(path: string) { window.open(this.getImageUrl(path), '_blank'); }
 
-  closePopup() { this.showCreatePopup = false; }
+  closePopup() {
+    this.showCreatePopup = false;
+    this.selectedCategoryId = null;
+  }
 
   resetForm() {
+    this.selectedCategoryId = null;
     this.clientForm = { ClientName: '', Highlights: '', PhoneNumber: '', WhatsAppNumber: '', Address: '', Location: '', EndDate: '', IsActive: true, SubCategoryMasterIds: [] };
     this.clientImageFile = null;
   }
