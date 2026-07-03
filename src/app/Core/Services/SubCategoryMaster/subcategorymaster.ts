@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class Subcategorymaster {
   private http = inject(HttpClient);
-  private baseUrl = 'https://gnwbazaar-002-site2.qtempurl.com';
+  private baseUrl = 'https://gnwbazaar.in/apigateway';
 
   getSubCategoryMaster(): Observable<any> {
     return this.http.get(`${this.baseUrl}/GetAll_SubCategoryMaster`);

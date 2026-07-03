@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class SponsorService {
   private http = inject(HttpClient);
-  private baseUrl = 'https://gnwbazaar-002-site2.qtempurl.com';
+  private baseUrl = 'https://gnwbazaar.in/apigateway';
 
   getSponsors() {
     return this.http.get(`${this.baseUrl}/GetByAdmin_Sponsor`);

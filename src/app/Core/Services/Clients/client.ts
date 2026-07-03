@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class Client {
   private http = inject(HttpClient);
-  private baseUrl = 'https://gnwbazaar-002-site2.qtempurl.com';
+  private baseUrl = 'https://gnwbazaar.in/apigateway';
 
   getClients(): Observable<any> {
     return this.http.get(`${this.baseUrl}/GetAll_Client`);

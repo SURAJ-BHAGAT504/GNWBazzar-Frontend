@@ -10,7 +10,7 @@ export class Auth {
   private http = inject(HttpClient);
   private router = inject(Router);
 
-  private readonly API_BASE = 'https://gnwbazaar-002-site2.qtempurl.com';
+  private readonly API_BASE = 'https://gnwbazaar.in/apigateway';
 
   login(credentials: any): Observable<any> {
   const formData = new FormData();

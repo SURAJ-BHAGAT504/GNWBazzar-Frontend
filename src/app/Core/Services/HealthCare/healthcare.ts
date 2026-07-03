@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class Healthcare {
   private http = inject(HttpClient);
-  private baseUrl = 'https://gnwbazaar-002-site2.qtempurl.com';
+  private baseUrl = 'https://gnwbazaar.in/apigateway';
 
   // --- DOCTOR METHODS ---
   getDoctors(): Observable<any> {
