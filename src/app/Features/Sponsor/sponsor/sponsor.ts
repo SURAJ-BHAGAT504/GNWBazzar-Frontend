@@ -15,7 +15,7 @@ export class Sponsor implements OnInit {
   sponsorService = inject(SponsorService);
   healthCareService = inject(Healthcare);
 
-  baseUrl = 'https://gnwbazaar-002-site2.qtempurl.com/';
+  baseUrl = 'https://gnwbazaar.in/apigateway/';
   searchTerm: string = '';
   sponsors: any[] = [];
   categories: any[] = [];

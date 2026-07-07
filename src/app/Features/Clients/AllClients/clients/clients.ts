@@ -16,7 +16,7 @@ export class Clients {
   subCategoryService = inject(Subcategorymaster);
   healthCareService = inject(Healthcare);
 
-  baseUrl = 'https://gnwbazaar-002-site2.qtempurl.com';
+  baseUrl = 'https://gnwbazaar.in/apigateway';
   searchTerm: string = '';
   selectedCategoryId: number | null = null;
   clients: any[] = [];

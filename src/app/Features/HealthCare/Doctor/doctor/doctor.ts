@@ -17,7 +17,7 @@ export class Doctor {
   healthcare = inject(Healthcare);
   router = inject(Router);
 
-  baseUrl = 'https://gnwbazaar-002-site2.qtempurl.com/';
+  baseUrl = 'https://gnwbazaar.in/apigateway/';
 
   searchTerm: string = '';
 
